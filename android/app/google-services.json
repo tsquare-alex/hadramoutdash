@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "450602968082",
+    "project_id": "hadrmout-ee44e",
+    "storage_bucket": "hadrmout-ee44e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450602968082:android:54aacd0c16974ff3f164cb",
+        "android_client_info": {
+          "package_name": "com.example.hadramoutdash"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqIHNcazNfp-_NeWpG7F5lJ05pyeF97ik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450602968082:android:a3c1075a8fd0a66af164cb",
+        "android_client_info": {
+          "package_name": "com.example.hadrmout"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqIHNcazNfp-_NeWpG7F5lJ05pyeF97ik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450602968082:android:f01370ca92083533f164cb",
+        "android_client_info": {
+          "package_name": "com.hadrmouthamza.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqIHNcazNfp-_NeWpG7F5lJ05pyeF97ik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

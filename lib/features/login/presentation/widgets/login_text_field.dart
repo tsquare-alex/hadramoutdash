@@ -8,6 +8,7 @@ class LoginTextField extends StatelessWidget {
     required this.icon,
     required this.inputType,
     this.isPassword = false,
+    required this.validator,
   });
 
   final TextEditingController controller;
@@ -15,6 +16,7 @@ class LoginTextField extends StatelessWidget {
   final IconData icon;
   final TextInputType inputType;
   final bool isPassword;
+  final String? Function(String? value) validator;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class LoginTextField extends StatelessWidget {
       height: 71,
       width: 470,
       alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(horizontal: 7),
+      padding: const EdgeInsets.all(7),
       decoration: BoxDecoration(
         color: AppColors.greyOp100,
         borderRadius: BorderRadius.circular(10),
@@ -35,6 +37,7 @@ class LoginTextField extends StatelessWidget {
             keyboardType: inputType,
             textAlignVertical: TextAlignVertical.center,
             obscureText: isPassword ? obscurePassword : false,
+            validator: validator,
             decoration: InputDecoration(
               prefixIcon: Icon(
                 icon,

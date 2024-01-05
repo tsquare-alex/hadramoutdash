@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
       () {
         Router.neglect(
           context,
-          () => context.go(AppRoutes.dashboardLoginScreen),
+          () => context.go(AppRoutes.loginScreen),
         );
       },
     );

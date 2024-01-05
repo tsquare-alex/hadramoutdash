@@ -1,3 +1,4 @@
+import '../../../login/cubit/login_cubit.dart';
 import '../widgets/app_bar_button.dart';
 import '/features/dashboard/cubit/dashboard_cubit.dart';
 import '/features/dashboard/presentation/widgets/drawer_tile.dart';
@@ -134,10 +135,19 @@ class DashboardScreen extends StatelessWidget {
                     const SizedBox(
                       width: 20,
                     ),
-                    AppBarButton(
-                      onTap: () {},
-                      icon: ImageConstants.logoutIcon,
-                      toolTip: 'تسجيل الخروج',
+                    BlocListener<LoginBloc, LoginState>(
+                      listener: (context, state) {
+                        if (state is LogoutCompleted) {
+                          context.go(AppRoutes.loginScreen);
+                        }
+                      },
+                      child: AppBarButton(
+                        onTap: () {
+                          LoginBloc.get(context).logout();
+                        },
+                        icon: ImageConstants.logoutIcon,
+                        toolTip: 'تسجيل الخروج',
+                      ),
                     ),
                     const SizedBox(
                       width: 40,

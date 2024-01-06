@@ -33,7 +33,7 @@ class LoginBloc extends Cubit<LoginState> {
         case 'invalid-credential':
           errorMessage = 'معلومات غير صحيحة';
         default:
-          errorMessage = error.code;
+          errorMessage = 'حدث خطأ ما: يرجى التأكد من صحة المعلومات المدخلة';
       }
       emit(
         LoginError(errorMessage: errorMessage),

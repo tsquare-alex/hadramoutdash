@@ -104,6 +104,23 @@ class LoginScreen extends StatelessWidget {
                                         LoginBloc.get(context)
                                             .clearControllers();
                                       }
+                                      if (state is LoginError) {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Center(
+                                              child: Text(
+                                                state.errorMessage,
+                                                style: AppTextStyles
+                                                    .font16WhiteSemiBold,
+                                              ),
+                                            ),
+                                            backgroundColor: AppColors.redOp100,
+                                          ),
+                                        );
+                                      }
                                     },
                                     builder: (context, state) {
                                       return ElevatedButton(

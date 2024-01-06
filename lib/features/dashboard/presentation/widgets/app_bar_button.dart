@@ -1,4 +1,4 @@
-import '/src/app_export.dart';
+import 'package:hadramoutdash/src/app_export.dart';
 
 class AppBarButton extends StatelessWidget {
   const AppBarButton({
@@ -27,11 +27,7 @@ class AppBarButton extends StatelessWidget {
           color: AppColors.yellowOp100,
           borderRadius: BorderRadius.circular(5),
         ),
-        child: Image.asset(
-          icon,
-          width: 18,
-          height: 20,
-        ),
+        child: Image.asset(icon, width: 18 , height: 20,),
       ),
     );
   }

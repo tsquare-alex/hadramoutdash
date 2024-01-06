@@ -21,14 +21,14 @@ class ClientModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        uid,
-        name,
-        address,
-        number,
-        building,
-        floor,
-        apartment,
-      ];
+    uid,
+    name,
+    address,
+    number,
+    building,
+    floor,
+    apartment,
+  ];
 
   Map<String, dynamic> toJson() {
     return {

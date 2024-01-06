@@ -1,4 +1,4 @@
-import '/src/app_export.dart';
+import 'package:hadramoutdash/src/app_export.dart';
 
 class DrawerTile extends StatelessWidget {
   const DrawerTile({

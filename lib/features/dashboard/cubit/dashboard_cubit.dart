@@ -1,171 +1,272 @@
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:hadramoutdash/core/common/models/client.dart';
+import 'package:hadramoutdash/core/common/models/order.dart';
+import 'package:hadramoutdash/core/common/models/section.dart';
+import 'package:hadramoutdash/core/common/models/species.dart';
+import 'package:hadramoutdash/features/dashboard/presentation/screens/dishes_page.dart';
+import 'package:hadramoutdash/features/dashboard/presentation/screens/main_page.dart';
+import 'package:hadramoutdash/features/dashboard/presentation/screens/menu_page.dart';
+import 'package:hadramoutdash/features/dashboard/presentation/screens/offers_page.dart';
+import 'package:hadramoutdash/features/dashboard/presentation/screens/sections_page.dart';
+import 'package:hadramoutdash/src/app_export.dart';
+import 'package:intl/intl.dart';
+
 import '../../../core/common/models/dishes.dart';
 import '../data/repository/dashboard_repository.dart';
-import '/core/common/models/client.dart';
-import '/core/common/models/order.dart';
-import '/core/common/models/section.dart';
-import '/core/common/models/species.dart';
-import '/features/dashboard/presentation/screens/dishes_page.dart';
-import '/features/dashboard/presentation/screens/main_page.dart';
-import '/features/dashboard/presentation/screens/menu_page.dart';
-import '/features/dashboard/presentation/screens/offers_page.dart';
-import '/features/dashboard/presentation/screens/sections_page.dart';
-import '/src/app_export.dart';
-
 part 'dashboard_state.dart';
+
 
 class DashboardBloc extends Cubit<DashboardState> {
   final DashboardRepository _dashboardRepository;
 
   DashboardBloc(
-    this._dashboardRepository,
-  ) : super(DashboardInitial());
+      this._dashboardRepository,
+      ) : super(DashboardInitial());
 
   static DashboardBloc get(context) => BlocProvider.of<DashboardBloc>(context);
+  AutovalidateMode autovalidateMode = AutovalidateMode.onUserInteraction;
+  // late List<OrderModel> _orders = [];
+  //
+  // List<OrderModel> get orders => _orders;
+  //
+  // late List<DishesModel> _dishes = [];
+  //
+  // List<DishesModel> get dishes => _dishes;
 
-  late List<OrderModel> _orders = [];
-
-  List<OrderModel> get orders => _orders;
-
-  late final List<DishesModel> _dishes = [];
-
-  List<DishesModel> get dishes => _dishes;
-
-  late final List<SectionModel> _sections = [];
+  late List<SectionModel> _sections = [];
 
   List<SectionModel> get sections => _sections;
 
-  late final List<SpeciesModel> _species = [];
+
+  late String errorMessage;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  String? fileName;
+  String? downloadUrl;
+  PlatformFile? pickedImage;
+  //todo Order's Method
+  // Future<void> getOrders() async {
+  //   emit(GetOrderDashboardLoading());
+  //   final orders = await _dashboardRepository.getOrders();
+  //   if (orders.isEmpty) {
+  //     emit(GetOrderDashboardError(errorMessage: 'No data'));
+  //   } else {
+  //     _orders = orders;
+  //     emit(GetOrderDashboardSuccess());
+  //   }
+  // }
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> updateFormKey = GlobalKey<FormState>();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController createdAtController = TextEditingController();
+  TextEditingController offerController = TextEditingController();
+  TextEditingController offerValueController = TextEditingController();
+
+  Future<void> addSpecies() async {
+    try {
+      double price = double.parse(priceController.text);
+
+
+      String? imageUrl;
+      if (pickedImage != null) imageUrl = await uploadSpeciesImage();
+      imageUrl ??= "";
+
+      SpeciesModel specices = SpeciesModel(
+        id: "",
+        title: titleController.text,
+        description: descController.text,
+        image: imageUrl,
+        price: price,
+        createdAt: DateTime.now().toString(),
+        section: SectionModel(id: "id", title: selectedSection),
+        offer: false,
+        offerValue: 20,
+      );
+
+      await _dashboardRepository.addSpecies(specices);
+      emit(AddSpeciesDashboardSuccess());
+    } catch (error) {
+      print("Error adding dish: $error");
+      emit(AddSpeciesDashboardError(errorMessage: error.toString()));
+    }
+  }
+  late List<SpeciesModel> _species = [];
 
   List<SpeciesModel> get species => _species;
-  late String errorMessage;
+  Future<void> getSpecies() async {
+    try {
+      emit(GetSpeciesDashboardLoading());
 
-  //todo Order's Method
-  Future<void> getOrders() async {
-    emit(GetOrderDashboardLoading());
-    final orders = await _dashboardRepository.getOrders();
-    // orders.isEmpty ? errorMessage = 'No data' : _orders = orders;
-    if (orders.isEmpty) {
-      emit(GetOrderDashboardError(errorMessage: 'No data'));
-    } else {
-      _orders = orders;
-      emit(GetOrderDashboardSuccess());
+      final species = await _dashboardRepository.getSpecies();
+
+
+      _species = species;
+      emit(GetSpeciesDashboardSuccess());
+
+    } catch (error) {
+      emit(GetSpeciesDashboardError(errorMessage: error.toString()));
+    }
+  }
+  Future<void> updateSpecies(String speciesId, SpeciesModel updatedSpecies) async {
+    try {
+      // Get the old dish data
+      SpeciesModel oldSpecies = _species.firstWhere((dish) => dish.id == speciesId);
+
+      // Check if the image has been changed
+      if (oldSpecies.image != updatedSpecies.image) {
+        // Check if there is an old image to delete
+        if (oldSpecies.image != null && oldSpecies.image!.isNotEmpty) {
+          String imageName = Uri.parse(oldSpecies.image!).pathSegments.last;
+
+          Reference oldImageRef = _storage.ref().child(imageName);
+
+          try {
+            // Attempt to get the download URL, will throw an error if not exists
+            await oldImageRef.getDownloadURL();
+
+            // If no error occurred, the file exists, proceed with deletion
+            await oldImageRef.delete();
+            print("Old Species image deleted successfully");
+          } catch (error) {
+            if (error is FirebaseException && error.code == 'storage/object-not-found') {
+              // Handle the case where the file doesn't exist
+              print("Old Species image does not exist");
+            } else {
+              // Handle other errors
+              print("Error deleting old Species image: $error");
+            }
+          }
+        }
+      }
+
+      // Update the dish data with the new image URL
+      await _dashboardRepository.updateSpecies(speciesId, updatedSpecies);
+      emit(UpdateSpeciesDashboardSuccess());
+    } catch (error) {
+      print("Error updating dish: $error");
+      emit(UpdateSpeciesDashboardError(errorMessage: error.toString()));
+    }
+  }
+  Future<void> deleteSpecies(String speciesId) async {
+    try {
+      await _dashboardRepository.deleteSpecies(speciesId);
+
+      _species.removeWhere((species) => species.id == speciesId);
+      emit(DeleteSpeciesDashboardSuccess());
+    } catch (error) {
+      emit(DeleteSpeciesDashboardError(errorMessage: error.toString()));
     }
   }
 
-  Future<void> addOrder() async {
-    emit(AddOrderDashboardLoading());
-    var order = OrderModel(
-      id: '',
-      cancelled: false,
-      client: const ClientModel(
-        uid: '2',
-        name: 'احمد شهاوي',
-        number: 01246845852,
-        address: '8 شارع البلح جمب البنزينة',
-        building: '4',
-        floor: '5',
-        apartment: '25',
-      ),
-      confirmed: false,
-      deliveryFees: 20,
-      delivered: false,
-      price: 7000,
-      createdAt: DateTime.now().toIso8601String(),
-      species: const [
-        SpeciesModel(
-          id: 'id',
-          title: 'نص فرخة مشوية',
-          price: 240,
-          createdAt: 'createdAt',
-          section: SectionModel(id: 'id', title: 'قسم الدجاج'),
-          quantity: 2,
-        ),
-      ],
-      dishes: null,
-    );
-    await _dashboardRepository.addOrder(order);
-    emit(AddOrderDashboardSuccess());
+  String selectedSection = '';
+
+  void updateSelectedSection(SectionModel section) {
+    selectedSection = section.title;
   }
 
-  //Todo Dishes's Method
+  pickImage() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(allowMultiple: false, type: FileType.image);
 
-  Future<void> getDishes() async {
-    emit(GetDishDashboardLoading());
-    final dishes = await _dashboardRepository.getDishes();
-    // dishes.isEmpty ? errorMessage = 'No data' : _dishes = dishes;
-    if (dishes.isEmpty) {
-      emit(GetDishDashboardError(errorMessage: "'No data'"));
-    } else {
-      emit(GetDishDashboardSuccess());
+    if (result != null) {
+      pickedImage = result.files.first;
+      fileName = pickedImage!.name;
+      emit(AddSpeciesImageDashboardSuccess());
     }
   }
 
-  Future<void> addDish() async {
-    emit(AddDishDashboardLoading());
-    var dish = DishesModel(
-      id: "",
-      title: "Welcome Dish",
-      description: "Montaser & Shahawy Created amazing Dish",
-      image:
-          "https://img.freepik.com/free-photo/beautiful-sea-ocean-with-cloud-blue-sky_74190-6828.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1704067200&semt=ais",
-      price: 90000000000,
-      createdAt: DateTime.now().toString(),
-      section: const SectionModel(id: "id", title: "Chicken"),
-      offer: false,
-      offerValue: 20,
-    );
-    await _dashboardRepository.addDish(dish);
-    emit(AddDishDashboardSuccess());
+
+  Future<String?> uploadSpeciesImage() async {
+    try {
+      Reference ref = _storage.ref().child("Species").child(fileName!);
+      SettableMetadata metadata = SettableMetadata(contentType: 'image/png');
+      Uint8List imageData = pickedImage!.bytes!;
+      await ref.putData(imageData, metadata);
+      String downloadUrl = await ref.getDownloadURL();
+      return downloadUrl;
+    } catch (error) {
+      print("Error uploading Species image: $error");
+      emit(AddSpeciesImageDashboardError(errorMessage: error.toString()));
+      return null;
+    }
   }
 
-  //Todo Dishes's Method
+//todo updaet dishes
+  final GlobalKey<FormState> updateDishFormKey = GlobalKey<FormState>();
+  late TextEditingController updateDishTitleController;
+  late TextEditingController updateDishDescriptionController;
+  late TextEditingController updateDishPriceController;
+  late TextEditingController updateDishSectionController;
+  late TextEditingController updateDishOfferValueController;
+
+
+  bool isLoading = false;
+
+  Future<void> deleteSection(String sectionId) async {
+    try {
+      await _dashboardRepository.deleteSection(sectionId);
+
+      _sections.removeWhere((section) => section.id == sectionId);
+      emit(DeleteSectionDashboardSuccess());
+    } catch (error) {
+      emit(DeleteSectionDashboardError(errorMessage: error.toString()));
+    }
+  }
+
+
+  Future<void> updateSection(String sectionId, SectionModel updatedSection) async {
+    try {
+      await _dashboardRepository.updateSection(sectionId, updatedSection);
+      emit(UpdateSectionDashboardSuccess());
+    } catch (error) {
+      print("Error updating dish: $error");
+      emit(UpdateSectionDashboardError(errorMessage: error.toString()));
+    }
+  }
+
 
   Future<void> getSections() async {
+    try{
     emit(GetSectionDashboardLoading());
+
     final sections = await _dashboardRepository.getSections();
-    // dishes.isEmpty ? errorMessage = 'No data' : _dishes = dishes;
-    if (sections.isEmpty) {
-      emit(GetSectionDashboardError(errorMessage: "'No data'"));
-    } else {
+    print("${sections} =========================================================");
+
+      _sections = sections;
       emit(GetSectionDashboardSuccess());
+    }catch (error){
+      emit(GetSectionDashboardError(errorMessage: error.toString()));
+
     }
   }
+
+
+
+
+  TextEditingController sectionTitleController = TextEditingController();
 
   Future<void> addSection() async {
     emit(AddSectionDashboardLoading());
-    var section = const SectionModel(id: "id", title: "Section");
+    var section =  SectionModel(id: "id", title: sectionTitleController.text);
     await _dashboardRepository.addSection(section);
     emit(AddSectionDashboardSuccess());
   }
 
-  //Todo Species Method
 
-  Future<void> getSpecies() async {
-    emit(GetSpeciesDashboardLoading());
-    final species = await _dashboardRepository.getSpecies();
-    // dishes.isEmpty ? errorMessage = 'No data' : _dishes = dishes;
-    if (species.isEmpty) {
-      emit(GetSpeciesDashboardError(errorMessage: "'No data'"));
-    } else {
-      emit(GetSpeciesDashboardSuccess());
-    }
-  }
 
-  Future<void> addSpecies() async {
-    emit(AddSpeciesDashboardLoading());
-    var section = SpeciesModel(
-        id: "id",
-        title: "New Meals",
-        price: 30099,
-        createdAt: DateTime.now().toIso8601String(),
-        section: const SectionModel(id: "", title: "New Meals"));
-    await _dashboardRepository.addSpecies(section);
-    emit(AddSpeciesDashboardSuccess());
-  }
+
+
+
+
+
 
   List<String> get drawerLabels => _drawerLabels;
   static const List<String> _drawerLabels = [
-    'الرئيسية',
+    // 'الرئيسية',
     'التصنيفات',
     'المنيو',
     'الاطباق',
@@ -174,7 +275,7 @@ class DashboardBloc extends Cubit<DashboardState> {
 
   List<String> get drawerSelectedIcons => _drawerSelectedIcons;
   static const List<String> _drawerSelectedIcons = [
-    ImageConstants.homeIconFill,
+    // ImageConstants.homeIconFill,
     ImageConstants.sectionsIconFill,
     ImageConstants.menuIconFill,
     ImageConstants.dishesIconFill,
@@ -182,7 +283,7 @@ class DashboardBloc extends Cubit<DashboardState> {
   ];
   List<String> get drawerUnselectedIcons => _drawerUnselectedIcons;
   static const List<String> _drawerUnselectedIcons = [
-    ImageConstants.homeIcon,
+    // ImageConstants.homeIcon,
     ImageConstants.sectionsIcon,
     ImageConstants.menuIcon,
     ImageConstants.dishesIcon,
@@ -197,10 +298,10 @@ class DashboardBloc extends Cubit<DashboardState> {
   }
 
   List screens = [
-    const MainPage(),
+    // const MainPage(),
     const SectionsPage(),
     const MenuPage(),
-    const DishesPage(),
+    DishesPage(),
     const OffersPage(),
   ];
 

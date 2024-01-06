@@ -27,21 +27,61 @@ class AddOrderDashboardLoading extends DashboardState {}
 
 
 //Todo: Dishes
-class GetDishDashboardLoading extends DashboardState {}
-class GetDishDashboardSuccess extends DashboardState {}
-class GetDishDashboardError extends DashboardState {
+class GetSpeciesDashboardLoading extends DashboardState {}
+class GetSpeciesDashboardSuccess extends DashboardState {}
+class GetSpeciesDashboardError extends DashboardState {
   final String errorMessage;
 
-  GetDishDashboardError({required this.errorMessage});
+  GetSpeciesDashboardError({required this.errorMessage});
 }
-class AddDishDashboardSuccess extends DashboardState {}
-class AddDishDashboardError extends DashboardState {
+class AddSpeciesDashboardSuccess extends DashboardState {}
+class AddSpeciesImageDashboardSuccess extends DashboardState {}
+class AddSpeciesImageDashboardError extends DashboardState {
   final String errorMessage;
 
-  AddDishDashboardError({required this.errorMessage});
+  AddSpeciesImageDashboardError({required this.errorMessage});
 
 }
-class AddDishDashboardLoading extends DashboardState {}
+class ImagePickLoading extends DashboardState {}
+
+class ImagePickedSuccessfully extends DashboardState {
+  final String imagePath;
+
+  ImagePickedSuccessfully(this.imagePath);
+}
+
+class ImagePickError extends DashboardState {
+  final String errorMessage;
+
+  ImagePickError({required this.errorMessage});
+}
+class AddSpeciesDashboardError extends DashboardState {
+  final String errorMessage;
+
+  AddSpeciesDashboardError({required this.errorMessage});
+
+}
+class AddSpeciesDashboardLoading extends DashboardState {}
+class DeleteSpeciesDashboardSuccess extends DashboardState {}
+
+class DeleteSpeciesDashboardError extends DashboardState {
+  final String errorMessage;
+  DeleteSpeciesDashboardError({required this.errorMessage});
+}
+class DeleteSpeciesImageDashboardError extends DashboardState {
+  final String errorMessage;
+  DeleteSpeciesImageDashboardError({required this.errorMessage});
+}
+
+class UpdateSpeciesDashboardSuccess extends DashboardState {}
+class UpdateSpeciesDashboardError extends DashboardState {
+  final String errorMessage;
+  UpdateSpeciesDashboardError({required this.errorMessage});
+}
+class DeleteOldSpeciesImageDashboardError extends DashboardState {
+  final String errorMessage;
+  DeleteOldSpeciesImageDashboardError({required this.errorMessage});
+}
 
 
 
@@ -61,23 +101,34 @@ class AddSectionDashboardError extends DashboardState {
 
 }
 class AddSectionDashboardLoading extends DashboardState {}
-
-
-//Todo:Species
-class GetSpeciesDashboardLoading extends DashboardState {}
-class GetSpeciesDashboardSuccess extends DashboardState {}
-class GetSpeciesDashboardError extends DashboardState {
+class UpdateSectionDashboardSuccess extends DashboardState {}
+class UpdateSectionDashboardError extends DashboardState {
   final String errorMessage;
-
-  GetSpeciesDashboardError({required this.errorMessage});
+  UpdateSectionDashboardError({required this.errorMessage});
 }
-class AddSpeciesDashboardSuccess extends DashboardState {}
-class AddSpeciesDashboardError extends DashboardState {
+class DeleteSectionDashboardSuccess extends DashboardState {}
+class DeleteSectionDashboardError extends DashboardState {
   final String errorMessage;
-
-  AddSpeciesDashboardError({required this.errorMessage});
-
+  DeleteSectionDashboardError({required this.errorMessage});
 }
-class AddSpeciesDashboardLoading extends DashboardState {}
+
+
+
+// //Todo:Species
+// class GetSpeciesDashboardLoading extends DashboardState {}
+// class GetSpeciesDashboardSuccess extends DashboardState {}
+// class GetSpeciesDashboardError extends DashboardState {
+//   final String errorMessage;
+//
+//   GetSpeciesDashboardError({required this.errorMessage});
+// }
+// class AddSpeciesDashboardSuccess extends DashboardState {}
+// class AddSpeciesDashboardError extends DashboardState {
+//   final String errorMessage;
+//
+//   AddSpeciesDashboardError({required this.errorMessage});
+//
+// }
+// class AddSpeciesDashboardLoading extends DashboardState {}
 
 class ChangeDrawerIndex extends DashboardState {}

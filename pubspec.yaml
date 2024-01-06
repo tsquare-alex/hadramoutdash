@@ -63,6 +63,8 @@ dependencies:
   flutter_staggered_animations:
   location:
   fl_chart:
+  file_picker:
+  firebase_storage:
 
 dev_dependencies:
   flutter_test:

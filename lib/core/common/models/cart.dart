@@ -1,5 +1,7 @@
-import 'package:equatable/equatable.dart';
+
+
 import 'package:hadramoutdash/core/common/models/section.dart';
+import 'package:hadramoutdash/src/app_export.dart';
 
 class CartModel extends Equatable {
   final String title;
@@ -27,6 +29,7 @@ class CartModel extends Equatable {
 
   @override
   List<Object?> get props => [title, description, image, price, quantity,totalPrice,createdAt,section,offer,offerValue];
+
 
   Map<String, dynamic> toJson() {
     return {

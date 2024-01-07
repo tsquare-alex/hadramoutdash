@@ -71,7 +71,7 @@ class _AddDishDialogState extends State<AddSpeciesDialog> {
                   controller: widget.dashboardCubit.priceController,
                   validationText: "من فضلك ادخل السعر",
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return "ادخل السعر";
                     }
                     try {

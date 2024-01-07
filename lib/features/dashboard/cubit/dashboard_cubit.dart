@@ -27,13 +27,7 @@ class DashboardBloc extends Cubit<DashboardState> {
 
   static DashboardBloc get(context) => BlocProvider.of<DashboardBloc>(context);
   AutovalidateMode autovalidateMode = AutovalidateMode.onUserInteraction;
-  // late List<OrderModel> _orders = [];
-  //
-  // List<OrderModel> get orders => _orders;
-  //
-  // late List<DishesModel> _dishes = [];
-  //
-  // List<DishesModel> get dishes => _dishes;
+
 
   late List<SectionModel> _sections = [];
 
@@ -45,17 +39,7 @@ class DashboardBloc extends Cubit<DashboardState> {
   String? fileName;
   String? downloadUrl;
   PlatformFile? pickedImage;
-  //todo Order's Method
-  // Future<void> getOrders() async {
-  //   emit(GetOrderDashboardLoading());
-  //   final orders = await _dashboardRepository.getOrders();
-  //   if (orders.isEmpty) {
-  //     emit(GetOrderDashboardError(errorMessage: 'No data'));
-  //   } else {
-  //     _orders = orders;
-  //     emit(GetOrderDashboardSuccess());
-  //   }
-  // }
+
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<FormState> updateFormKey = GlobalKey<FormState>();
@@ -65,6 +49,55 @@ class DashboardBloc extends Cubit<DashboardState> {
   TextEditingController createdAtController = TextEditingController();
   TextEditingController offerController = TextEditingController();
   TextEditingController offerValueController = TextEditingController();
+
+
+  late List<OrderModel> _order = [];
+
+  List<OrderModel> get order => _order;
+
+  Future<void> getOrder() async {
+    try {
+      emit(GetOrderDashboardLoading());
+
+      final List<OrderModel> orderList = await _dashboardRepository.getOrder();
+
+      if (orderList.isNotEmpty) {
+        _order = orderList;
+        emit(GetOrderDashboardSuccess());
+      } else {
+        emit(GetOrderDashboardError(errorMessage: "Invalid or empty order data"));
+      }
+    } catch (error) {
+      print('Error in getOrder: $error');
+      emit(GetOrderDashboardError(errorMessage: error.toString()));
+    }
+  }
+
+
+
+
+  Future<void> updateOrder(String orderId, OrderModel updatedOrder) async {
+    try {
+
+
+      await _dashboardRepository.updateOrder(orderId, updatedOrder);
+      emit(UpdateOrderDashboardSuccess());
+    } catch (error) {
+      print("Error updating dish: $error");
+      emit(UpdateOrderDashboardError(errorMessage: error.toString()));
+    }
+  }
+
+  Future<void> deleteOrder(String orderId) async {
+    try {
+      await _dashboardRepository.deleteOrder(orderId);
+
+      _order.removeWhere((order) => order.id == orderId);
+      emit(DeleteOrderDashboardSuccess());
+    } catch (error) {
+      emit(DeleteOrderDashboardError(errorMessage: error.toString()));
+    }
+  }
 
   Future<void> addSpecies() async {
     try {

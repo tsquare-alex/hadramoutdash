@@ -1,8 +1,9 @@
+import 'package:hadramoutdash/features/dashboard/cubit/dashboard_cubit.dart';
+import 'package:hadramoutdash/features/dashboard/presentation/widgets/drawer_tile.dart';
+import 'package:hadramoutdash/src/app_export.dart';
+
 import '../../../login/cubit/login_cubit.dart';
 import '../widgets/app_bar_button.dart';
-import '/features/dashboard/cubit/dashboard_cubit.dart';
-import '/features/dashboard/presentation/widgets/drawer_tile.dart';
-import '/src/app_export.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -136,19 +137,19 @@ class DashboardScreen extends StatelessWidget {
                       width: 20,
                     ),
                     BlocListener<LoginBloc, LoginState>(
-                      listener: (context, state) {
-                        if (state is LogoutCompleted) {
-                          context.go(AppRoutes.loginScreen);
-                        }
-                      },
-                      child: AppBarButton(
-                        onTap: () {
-                          LoginBloc.get(context).logout();
+                        listener: (context, state) {
+                          if (state is LogoutCompleted) {
+                            context.go(AppRoutes.loginScreen);
+                          }
                         },
-                        icon: ImageConstants.logoutIcon,
-                        toolTip: 'تسجيل الخروج',
-                      ),
-                    ),
+                        child: AppBarButton(
+                          onTap: () {
+                            LoginBloc.get(context).logout();
+                          },
+                          icon: ImageConstants.logoutIcon,
+                          toolTip: 'تسجيل الخروج',
+                        ),
+                        ),
                     const SizedBox(
                       width: 40,
                     ),

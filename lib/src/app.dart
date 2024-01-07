@@ -1,3 +1,5 @@
+import 'package:flutter/gestures.dart';
+
 import '../features/dashboard/cubit/dashboard_cubit.dart';
 import '../features/login/cubit/login_cubit.dart';
 import 'app_export.dart';
@@ -23,6 +25,9 @@ class MyApp extends StatelessWidget {
             behavior: HitTestBehavior.opaque,
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: MaterialApp.router(
+              scrollBehavior: const MaterialScrollBehavior().copyWith(
+                dragDevices: {PointerDeviceKind.mouse},
+              ),
               title: 'Hadrmout Hamza',
               debugShowCheckedModeBanner: false,
               theme: AppThemes.lightTheme,

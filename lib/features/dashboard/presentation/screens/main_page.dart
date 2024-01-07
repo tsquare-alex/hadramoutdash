@@ -1,4 +1,4 @@
-import '/src/app_export.dart';
+import 'package:hadramoutdash/src/app_export.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});

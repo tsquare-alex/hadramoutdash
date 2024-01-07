@@ -1,4 +1,5 @@
-import '../../../src/app_export.dart';
+
+import 'package:equatable/equatable.dart';
 
 import 'section.dart';
 
@@ -8,24 +9,26 @@ class SpeciesModel extends Equatable {
   final String? description;
   final String? image;
   final double price;
-  final int? quantity;
   final String createdAt;
   final SectionModel section;
+  final bool? offer;
+  final int? offerValue;
 
-  const SpeciesModel({
+  SpeciesModel({
     required this.id,
     required this.title,
     this.description,
     this.image,
     required this.price,
-    this.quantity,
     required this.createdAt,
     required this.section,
+    this.offer,
+    this.offerValue,
   });
 
   @override
   List<Object?> get props =>
-      [id, title, description, image, price, createdAt, section, quantity];
+      [id, title, description, image, price, createdAt, section,offer,offerValue];
 
   Map<String, dynamic> toJson() {
     return {
@@ -34,9 +37,10 @@ class SpeciesModel extends Equatable {
       'description': description,
       'image': image,
       'price': price,
-      'quantity': quantity,
       'created_at': createdAt,
       'section': section.toJson(),
+      'offer': offer,
+      'offerValue': offerValue,
     };
   }
 
@@ -47,9 +51,10 @@ class SpeciesModel extends Equatable {
       description: json['description'],
       image: json['image'],
       price: json['price']?.toDouble() ?? 0.0,
-      quantity: json['quantity']?.toInt() ?? 1,
       createdAt: json['created_at'] ?? '',
       section: SectionModel.fromJson(json['section']),
+      offer: json['offer'] ?? false,
+      offerValue: json['offerValue']?.toInt() ?? 0,
     );
   }
 }

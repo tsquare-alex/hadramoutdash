@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../../../src/app_export.dart';
 
 import 'cart.dart';
@@ -63,7 +65,7 @@ class OrderModel extends Equatable {
       'delivered': delivered,
       'price': price,
       'created_at': createdAt,
-      'cartModel': cartModel.map((x) => x.toJson()).toList(),
+      'items': cartModel.map((x) => x.toJson()).toList(),
     };
   }
   factory OrderModel.fromJson(Map<String, dynamic> json) {
@@ -76,20 +78,19 @@ class OrderModel extends Equatable {
       price: json['price']?.toDouble() ?? 0.0,
       createdAt: json['created_at'] ?? '',
       orderDate: json['order_date'] is String
-          ? DateTime.parse(json['order_date'])
+          ? DateFormat('yyyy-MM-dd').parse(json['order_date'])
           : DateTime.now(),
       orderTime: json['order_time'] ?? '',
       orderMethod: json['order_method'] ?? '',
-      cartModel: json['cartModel'] != null
-          ? List<CartModel>.from(
-        json['cartModel']?.map((x) => CartModel.fromJson(x)) ?? [],
-      )
-          : [],
+      cartModel: (json['items'] as List<dynamic>? ?? []).map((itemJson) => CartModel.fromJson(itemJson)).toList(),
       deliveryModel: json['delivery_details'] != null
           ? DeliveryModel.fromJson(json['delivery_details'])
           : null,
     );
   }
+
+
+
 
 
 }
@@ -102,11 +103,14 @@ class OrderModel extends Equatable {
 //     delivered: json['delivered'] ?? false,
 //     price: json['price']?.toDouble() ?? 0.0,
 //     createdAt: json['created_at'] ?? '',
-//     orderDate: json['order_date'] ?? DateTime.now(),
+//     orderDate: json['order_date'] is String
+//         ? DateTime.parse(json['order_date'])
+//         : DateTime.now(),
 //     orderTime: json['order_time'] ?? '',
 //     orderMethod: json['order_method'] ?? '',
-//     cartModel: json['cartModel'] ?? List<CartModel>.from(
-//         json['cartModel']?.map((x) => CartModel.fromJson(x))),
-//     deliveryModel: DeliveryModel.fromJson(json['delivery_details']),
+//     cartModel: (json['items'] as List<dynamic>? ?? []).map((itemJson) => CartModel.fromJson(itemJson)).toList(),
+//     deliveryModel: json['delivery_details'] != null
+//         ? DeliveryModel.fromJson(json['delivery_details'])
+//         : null,
 //   );
 // }

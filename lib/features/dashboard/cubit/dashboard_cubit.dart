@@ -8,10 +8,11 @@ import 'package:hadramoutdash/core/common/models/species.dart';
 import 'package:hadramoutdash/features/dashboard/presentation/screens/dishes_page.dart';
 import 'package:hadramoutdash/features/dashboard/presentation/screens/main_page.dart';
 import 'package:hadramoutdash/features/dashboard/presentation/screens/menu_page.dart';
-import 'package:hadramoutdash/features/dashboard/presentation/screens/offers_page.dart';
+import 'package:hadramoutdash/features/dashboard/presentation/screens/order_page.dart';
 import 'package:hadramoutdash/features/dashboard/presentation/screens/sections_page.dart';
 import 'package:hadramoutdash/src/app_export.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../core/common/models/dishes.dart';
 import '../data/repository/dashboard_repository.dart';
@@ -215,7 +216,10 @@ class DashboardBloc extends Cubit<DashboardState> {
 
   Future<String?> uploadSpeciesImage() async {
     try {
-      Reference ref = _storage.ref().child("Species").child(fileName!);
+      String imageName = Uuid().v4(); // This will generate a unique UUID
+
+      // Reference ref = _storage.ref().child("Species").child(fileName!);
+      Reference ref = _storage.ref().child("Species").child("$imageName.png");
       SettableMetadata metadata = SettableMetadata(contentType: 'image/png');
       Uint8List imageData = pickedImage!.bytes!;
       await ref.putData(imageData, metadata);
@@ -302,8 +306,8 @@ class DashboardBloc extends Cubit<DashboardState> {
     // 'الرئيسية',
     'التصنيفات',
     'المنيو',
-    'الاطباق',
-    'العروض',
+    // 'الاطباق',
+    'الاوردرات',
   ];
 
   List<String> get drawerSelectedIcons => _drawerSelectedIcons;
@@ -311,7 +315,7 @@ class DashboardBloc extends Cubit<DashboardState> {
     // ImageConstants.homeIconFill,
     ImageConstants.sectionsIconFill,
     ImageConstants.menuIconFill,
-    ImageConstants.dishesIconFill,
+    // ImageConstants.dishesIconFill,
     ImageConstants.offersIconFill,
   ];
   List<String> get drawerUnselectedIcons => _drawerUnselectedIcons;
@@ -319,7 +323,7 @@ class DashboardBloc extends Cubit<DashboardState> {
     // ImageConstants.homeIcon,
     ImageConstants.sectionsIcon,
     ImageConstants.menuIcon,
-    ImageConstants.dishesIcon,
+    // ImageConstants.dishesIcon,
     ImageConstants.offersIcon,
   ];
 
@@ -334,8 +338,8 @@ class DashboardBloc extends Cubit<DashboardState> {
     // const MainPage(),
     const SectionsPage(),
     const MenuPage(),
-    DishesPage(),
-    const OffersPage(),
+    // DishesPage(),
+    const OrderPage(),
   ];
 
   bool isSelectedTile(int index, String tileName) {

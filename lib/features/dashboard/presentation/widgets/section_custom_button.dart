@@ -1,7 +1,9 @@
-import '../../../../src/app_export.dart';
+import 'package:flutter/material.dart';
 
-class CustomActionButton extends StatelessWidget {
-  const CustomActionButton({
+import '../../../../core/themes/colors.dart';
+
+class SectionCustomActionButton extends StatelessWidget {
+  const SectionCustomActionButton({
     Key? key,
     required VoidCallback onElevatedButtonPressed,
     required VoidCallback onIconButtonPressed,
@@ -16,10 +18,9 @@ class CustomActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 315,
-      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+      // width: 315,
+      // padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
       child: Row(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InkWell(
             onTap: _onElevatedButtonPressed,

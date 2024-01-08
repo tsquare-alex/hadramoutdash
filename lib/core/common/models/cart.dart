@@ -37,11 +37,11 @@ class CartModel extends Equatable {
       'description': description,
       'image': image,
       'price': price,
-      'totalPrice': totalPrice,
+      'total_price': totalPrice,
       'quantity': quantity,
       'createdAt': createdAt,
       'offer': offer,
-      'offerValue': offerValue,
+      'offer_value': offerValue,
       'section': section.toJson(),
     };
   }
@@ -53,11 +53,11 @@ class CartModel extends Equatable {
       description: json['description'],
       createdAt: json['created_at'] ?? '',
       offer: json['offer'] ?? false,
-      offerValue: json['offerValue']?.toInt() ?? 0,
+      offerValue: json['offer_value']?.toInt() ?? 0,
       image: json['image'],
       quantity: json['quantity']?.toInt() ?? 1,
       price: json['price']?.toDouble() ?? 0.0,
-      totalPrice: json['totalPrice']?.toDouble() ?? 0.0,
+      totalPrice: json['total_price']?.toDouble() ?? 0.0,
     );
   }
 }

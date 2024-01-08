@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hadramoutdash/src/app_export.dart';
 
 import '../../../../core/common/models/species.dart';
@@ -147,15 +148,17 @@ class _MenuPageState extends State<MenuPage> {
                                                 child: CircleAvatar(
                                                   radius: 50,
                                                   child: ClipOval(
-                                                    child: Image.network(
-                                                      item.image!,
+                                                    child: CachedNetworkImage(
+                                                      // imageRenderMethodForWeb: item.image!,
+                                                      imageUrl:item.image!,
                                                       width: 100,
                                                       height: 100,
                                                       fit: BoxFit.cover,
-                                                      errorBuilder: (context, error, stackTrace) {
-                                                        print('Error loading image: $error');
-                                                        return Image.asset("assets/images/dashboard_logo.png");
-                                                      },
+                                                      errorWidget: (context, url, error) => Image.asset("assets/images/dashboard_logo.png"),
+                                                      // errorBuilder: (context, error, stackTrace) {
+                                                      //   // print('Error loading image: $error');
+                                                      //   return Image.asset("assets/images/dashboard_logo.png");
+                                                      // },
                                                     ),
                                                   ),
                                                 ),
@@ -167,7 +170,9 @@ class _MenuPageState extends State<MenuPage> {
                                     ),
                                   ),
 
-                                  const Divider(),
+                                  const Divider(
+                                    color: AppColors.darkGrey,
+                                  ),
                                 ],
                               ),
                         )

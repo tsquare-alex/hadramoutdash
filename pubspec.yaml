@@ -65,6 +65,7 @@ dependencies:
   fl_chart:
   file_picker:
   firebase_storage:
+  uuid:
 
 dev_dependencies:
   flutter_test:

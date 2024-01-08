@@ -45,7 +45,7 @@ class _AddDishDialogState extends State<AddSectionDialog> {
                     hintText: "ادخل اسم القسم",
                     validationText: "yes",
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      if (value == null ||  value.trim().isEmpty) {
                         return "من فضلك ادخل الاسم";
                       }else{
                         return null;

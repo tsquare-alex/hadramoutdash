@@ -45,7 +45,7 @@ class _AddDishDialogState extends State<AddSpeciesDialog> {
                   hintText: "ادخل الاسم",
                   validationText: "yes",
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null ||  value.trim().isEmpty) {
                       return "من فضلك ادخل الاسم";
                     } else {
                       return null;
@@ -186,7 +186,7 @@ class _AddDishDialogState extends State<AddSpeciesDialog> {
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: const CustomText(title: "حاضر"),
+              child: const CustomText(title: "حسنا"),
             ),
           ],
         );

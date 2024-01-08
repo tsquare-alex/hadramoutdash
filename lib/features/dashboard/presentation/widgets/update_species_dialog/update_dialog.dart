@@ -82,7 +82,7 @@ class _UpdateDishDialogState extends State<UpdateDishDialog> {
                       hintText: "ادخل الاسم",
                       validationText: "yes",
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null ||  value.trim().isEmpty) {
                           return "من فضلك ادخل الاسم";
                         } else {
                           return null;
@@ -97,7 +97,7 @@ class _UpdateDishDialogState extends State<UpdateDishDialog> {
                       hintText: "ادخل التفاصيل",
                       validationText: "yes",
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null ||  value.isEmpty) {
                           return "من فضلك ادخل التفاصيل";
                         } else {
                           return null;
@@ -140,7 +140,7 @@ class _UpdateDishDialogState extends State<UpdateDishDialog> {
                       controller: context.read<DashboardBloc>().updateDishPriceController,
                       validationText: "من فضلك ادخل السعر",
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null ||  value.trim().isEmpty) {
                           return "ادخل السعر";
                         }
                         try {

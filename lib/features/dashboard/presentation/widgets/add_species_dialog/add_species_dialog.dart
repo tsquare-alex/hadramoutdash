@@ -45,7 +45,7 @@ class _AddDishDialogState extends State<AddSpeciesDialog> {
                   hintText: "ادخل الاسم",
                   validationText: "yes",
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null ||  value.trim().isEmpty) {
                       return "من فضلك ادخل الاسم";
                     } else {
                       return null;
@@ -58,7 +58,7 @@ class _AddDishDialogState extends State<AddSpeciesDialog> {
                   hintText: "ادخل التفاصيل",
                   validationText: "yes",
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null ) {
                       return "من فضلك ادخل التفاصيل";
                     } else {
                       return null;
@@ -71,7 +71,7 @@ class _AddDishDialogState extends State<AddSpeciesDialog> {
                   controller: widget.dashboardCubit.priceController,
                   validationText: "من فضلك ادخل السعر",
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return "ادخل السعر";
                     }
                     try {
@@ -88,9 +88,17 @@ class _AddDishDialogState extends State<AddSpeciesDialog> {
                     await widget.dashboardCubit.pickImage();
                     setState(() {});
                   },
-                  child: const CustomText(
-                    title: "اختار صورة",),
-                ),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: AppColors.yellowOp75
+            ),
+            child: const CustomText(
+                title: "اختار صورة",
+                isTitle: true
+            ),
+          )),
                 widget.dashboardCubit.pickedImage != null
                     ? CircleAvatar(
                   radius: 50,
@@ -107,30 +115,43 @@ class _AddDishDialogState extends State<AddSpeciesDialog> {
                   ),
                 ) : Container(),
                 const SizedBox(height: 20),
-                DropdownButtonFormField<String>(
-                  hint: const CustomText(title: "أختر القسم"),
-                  value: widget.dashboardCubit.selectedSection.isNotEmpty
-                      ? widget.dashboardCubit.selectedSection
-                      : null,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      widget.dashboardCubit.updateSelectedSection(
-                        widget.dashboardCubit.sections.firstWhere(
-                              (section) => section.title == newValue,
-                          orElse: () =>
-                              const SectionModel(id: "",
-                                  title: ""),
-                        ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: AppColors.greyOp100,
+                  ),
+                  child: DropdownButton<String>(
+                    hint: const CustomText(title: "أختر القسم"),
+                    dropdownColor: AppColors.greyOp100,
+                    underline: const SizedBox.shrink(),
+                    isExpanded: true,
+                    borderRadius: BorderRadius.circular(10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 5, horizontal: 15),
+                    focusColor: AppColors.blackOp10,
+                    value: widget.dashboardCubit.selectedSection.isNotEmpty
+                        ? widget.dashboardCubit.selectedSection
+                        : null,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        widget.dashboardCubit.updateSelectedSection(
+                          widget.dashboardCubit.sections.firstWhere(
+                                (section) => section.title == newValue,
+                            orElse: () =>
+                                const SectionModel(id: "",
+                                    title: ""),
+                          ),
+                        );
+                      });
+                    },
+                    items: widget.dashboardCubit.sections.map((
+                        SectionModel section) {
+                      return DropdownMenuItem<String>(
+                        value: section.title,
+                        child: Text(section.title),
                       );
-                    });
-                  },
-                  items: widget.dashboardCubit.sections.map((
-                      SectionModel section) {
-                    return DropdownMenuItem<String>(
-                      value: section.title,
-                      child: Text(section.title),
-                    );
-                  }).toList(),
+                    }).toList(),
+                  ),
                 ),
 
 
@@ -186,7 +207,7 @@ class _AddDishDialogState extends State<AddSpeciesDialog> {
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: const CustomText(title: "حاضر"),
+              child: const CustomText(title: "حسنا"),
             ),
           ],
         );

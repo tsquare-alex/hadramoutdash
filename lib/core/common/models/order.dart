@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../../../src/app_export.dart';
 
 import 'cart.dart';
@@ -11,21 +13,31 @@ class OrderModel extends Equatable {
   final ClientModel client;
   final bool confirmed;
   final bool delivered;
-  final double price;
+  final double total;
+  final double subTotal;
   final String createdAt;
+  final DateTime orderDate;
+  final String orderTime;
+  final String orderMethod;
   final List<CartModel> cartModel;
-  final DeliveryModel deliveryModel;
+  final DeliveryModel? deliveryModel;
+
 
   const OrderModel({
     required this.id,
     required this.cancelled,
     required this.client,
     required this.confirmed,
-    required this.deliveryModel,
+    required this.orderDate,
+    required this.orderTime,
+    required this.orderMethod,
+    this.deliveryModel,
     required this.delivered,
-    required this.price,
+    required this.total,
+    required this.subTotal,
     required this.createdAt,
     required this.cartModel,
+
   });
 
   @override
@@ -34,10 +46,14 @@ class OrderModel extends Equatable {
     cancelled,
     client,
     confirmed,
+    orderDate,
     delivered,
     deliveryModel,
-    price,
+    total,
     cartModel,
+    orderTime,
+    orderDate,
+    orderMethod,
   ];
 
   Map<String, dynamic> toJson() {
@@ -46,14 +62,17 @@ class OrderModel extends Equatable {
       'cancelled': cancelled,
       'client': client.toJson(),
       'confirmed': confirmed,
-      'delivery_details': deliveryModel.toJson(),
+      'order_date': orderDate,
+      'order_time': orderTime,
+      'order_method': orderMethod,
+      'delivery_details': deliveryModel?.toJson(),
       'delivered': delivered,
-      'price': price,
+      'total': total,
+      'sub_total': subTotal,
       'created_at': createdAt,
-      'cartModel': cartModel.map((x) => x.toJson()).toList(),
+      'items': cartModel.map((x) => x.toJson()).toList(),
     };
   }
-
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     return OrderModel(
       id: json['id'] ?? '',
@@ -61,11 +80,43 @@ class OrderModel extends Equatable {
       client: ClientModel.fromJson(json['client']),
       confirmed: json['confirmed'] ?? false,
       delivered: json['delivered'] ?? false,
-      price: json['price']?.toDouble() ?? 0.0,
+      total: json['total']?.toDouble() ?? 0.0,
+      subTotal: json['sub_total']?.toDouble() ?? 0.0,
       createdAt: json['created_at'] ?? '',
-      cartModel: json['cartModel'] ?? List<CartModel>.from(
-          json['cartModel']?.map((x) => CartModel.fromJson(x))),
-      deliveryModel: DeliveryModel.fromJson(json['delivery_details']),
+      orderDate: json['order_date'] is String
+          ? DateFormat('yyyy-MM-dd').parse(json['order_date'])
+          : DateTime.now(),
+      orderTime: json['order_time'] ?? '',
+      orderMethod: json['order_method'] ?? '',
+      cartModel: (json['items'] as List<dynamic>? ?? []).map((itemJson) => CartModel.fromJson(itemJson)).toList(),
+      deliveryModel: json['delivery_details'] != null
+          ? DeliveryModel.fromJson(json['delivery_details'])
+          : null,
     );
   }
+
+
+
+
+
 }
+// factory OrderModel.fromJson(Map<String, dynamic> json) {
+//   return OrderModel(
+//     id: json['id'] ?? '',
+//     cancelled: json['cancelled'] ?? false,
+//     client: ClientModel.fromJson(json['client']),
+//     confirmed: json['confirmed'] ?? false,
+//     delivered: json['delivered'] ?? false,
+//     price: json['price']?.toDouble() ?? 0.0,
+//     createdAt: json['created_at'] ?? '',
+//     orderDate: json['order_date'] is String
+//         ? DateTime.parse(json['order_date'])
+//         : DateTime.now(),
+//     orderTime: json['order_time'] ?? '',
+//     orderMethod: json['order_method'] ?? '',
+//     cartModel: (json['items'] as List<dynamic>? ?? []).map((itemJson) => CartModel.fromJson(itemJson)).toList(),
+//     deliveryModel: json['delivery_details'] != null
+//         ? DeliveryModel.fromJson(json['delivery_details'])
+//         : null,
+//   );
+// }

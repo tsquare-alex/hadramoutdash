@@ -38,14 +38,14 @@ class _AddDishDialogState extends State<AddSectionDialog> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const CustomText(title: "أضافة قسم",  isTitle: true),
+                  const CustomText(title: "أضافة تصنيف",  isTitle: true),
                   Gap(24),
                   CustomTextFormField(
                     controller: widget.dashboardBloc.sectionTitleController,
-                    hintText: "ادخل اسم القسم",
+                    hintText: "ادخل اسم تصنيف",
                     validationText: "yes",
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      if (value == null ||  value.trim().isEmpty) {
                         return "من فضلك ادخل الاسم";
                       }else{
                         return null;

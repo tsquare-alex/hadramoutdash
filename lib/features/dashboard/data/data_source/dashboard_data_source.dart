@@ -1,6 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:hadramoutdash/core/common/models/dishes.dart';
 import 'package:hadramoutdash/core/common/models/order.dart';
+
 import 'package:hadramoutdash/core/common/models/section.dart';
 import 'package:hadramoutdash/core/common/models/species.dart';
 import 'package:hadramoutdash/src/app_export.dart';
@@ -18,6 +18,29 @@ class DashboardDataSource {
   //   await _firebaseDatabase.collection('orders').doc(data.id).update({'id': data.id});
   // }
 
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getOrders() async {
+    final result = await _firebaseDatabase.collection('orders')
+        // .orderBy('created_at', descending: true)
+        .get();
+    print('Orders Query Result: ${result.docs}');
+    return result;
+  }
+
+  Future<void> deleteOrder(String orderId) async {
+    await _firebaseDatabase.collection('orders').doc(orderId).delete();
+  }
+
+
+  Future<void> updateOrder(String orderIdId, OrderModel updatedOrder) async {
+    await _firebaseDatabase.collection('orders').doc(orderIdId).update(updatedOrder.toJson());
+  }
+
+
+
+
+
+
   Future<QuerySnapshot<Map<String, dynamic>>> getSpecies() async {
     final result = await _firebaseDatabase.collection('species')
         .orderBy('created_at', descending: true)
@@ -27,11 +50,24 @@ class DashboardDataSource {
   }
 
 
+
+
   Future<void> addSpecies(SpeciesModel species) async {
     final data = await _firebaseDatabase.collection('species').add(species.toJson());
     await _firebaseDatabase.collection('species').doc(data.id).update({'id': data.id});
   }
 
+
+  // Future<String?> getOrderImagePath(String orderId) async {
+  //   final speciesDoc = await _firebaseDatabase.collection('species').doc(orderId).get();
+  //   final speciesData = speciesDoc.data() as Map<String, dynamic>?;
+  //
+  //   if (speciesData != null) {
+  //     return speciesData['image'] as String?;
+  //   }
+  //
+  //   return null;
+  // }
 
   Future<String?> getSpeciesImagePath(String speciesId) async {
     final speciesDoc = await _firebaseDatabase.collection('species').doc(speciesId).get();

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:hadramoutdash/core/common/models/dishes.dart';
 import 'package:hadramoutdash/core/common/models/section.dart';
 import 'package:hadramoutdash/core/common/models/species.dart';
@@ -82,7 +83,7 @@ class _UpdateDishDialogState extends State<UpdateDishDialog> {
                       hintText: "ادخل الاسم",
                       validationText: "yes",
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null ||  value.trim().isEmpty) {
                           return "من فضلك ادخل الاسم";
                         } else {
                           return null;
@@ -97,7 +98,7 @@ class _UpdateDishDialogState extends State<UpdateDishDialog> {
                       hintText: "ادخل التفاصيل",
                       validationText: "yes",
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null ||  value.isEmpty) {
                           return "من فضلك ادخل التفاصيل";
                         } else {
                           return null;
@@ -112,9 +113,16 @@ class _UpdateDishDialogState extends State<UpdateDishDialog> {
                           await widget.dashboardBloc.pickImage();
                           setState(() {});
                         },
-                        child: const CustomText(
-                            title: "اختار صورة",
-                            isTitle: true
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: AppColors.yellowOp75
+                          ),
+                          child: const CustomText(
+                              title: "اختار صورة",
+                              isTitle: true
+                          ),
                         )),
                     widget.dashboardBloc.pickedImage != null
                         ? CircleAvatar(
@@ -140,7 +148,7 @@ class _UpdateDishDialogState extends State<UpdateDishDialog> {
                       controller: context.read<DashboardBloc>().updateDishPriceController,
                       validationText: "من فضلك ادخل السعر",
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null ||  value.trim().isEmpty) {
                           return "ادخل السعر";
                         }
                         try {
@@ -152,25 +160,33 @@ class _UpdateDishDialogState extends State<UpdateDishDialog> {
                       },
                     ),
 
+                    Gap(20),
 
 
-                    DropdownButtonFormField<SectionModel>(
-                      value: selectedSection,
-                      onChanged: (SectionModel? newValue) {
-                        setState(() {
-                          selectedSection =
-                              newValue ?? SectionModel(id: "", title: "");
-                        });
-                      },
-                      items: [
-                        ...widget.dashboardBloc.sections
-                            .map((SectionModel section) {
-                          return DropdownMenuItem<SectionModel>(
-                            value: section,
-                            child: Text(section.title),
-                          );
-                        }).toList(),
-                      ],
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.greyOp100,
+                      ),
+                      child: DropdownButtonFormField<SectionModel>(
+                        value: selectedSection,
+                        dropdownColor: AppColors.greyOp100,
+                        onChanged: (SectionModel? newValue) {
+                          setState(() {
+                            selectedSection =
+                                newValue ?? SectionModel(id: "", title: "");
+                          });
+                        },
+                        items: [
+                          ...widget.dashboardBloc.sections
+                              .map((SectionModel section) {
+                            return DropdownMenuItem<SectionModel>(
+                              value: section,
+                              child: Text(section.title),
+                            );
+                          }).toList(),
+                        ],
+                      ),
                     ),
 
                     const SizedBox(height: 20),

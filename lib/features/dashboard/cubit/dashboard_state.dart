@@ -15,14 +15,16 @@ class GetOrderDashboardError extends DashboardState {
 
   GetOrderDashboardError({required this.errorMessage});
 }
-class AddOrderDashboardSuccess extends DashboardState {}
-class AddOrderDashboardError extends DashboardState {
+class UpdateOrderDashboardSuccess extends DashboardState {}
+class UpdateOrderDashboardError extends DashboardState {
   final String errorMessage;
-
-  AddOrderDashboardError({required this.errorMessage});
-
+  UpdateOrderDashboardError({required this.errorMessage});
 }
-class AddOrderDashboardLoading extends DashboardState {}
+class DeleteOrderDashboardSuccess extends DashboardState {}
+class DeleteOrderDashboardError extends DashboardState {
+  final String errorMessage;
+  DeleteOrderDashboardError({required this.errorMessage});
+}
 
 
 
@@ -36,6 +38,7 @@ class GetSpeciesDashboardError extends DashboardState {
 }
 class AddSpeciesDashboardSuccess extends DashboardState {}
 class AddSpeciesImageDashboardSuccess extends DashboardState {}
+
 class AddSpeciesImageDashboardError extends DashboardState {
   final String errorMessage;
 
@@ -114,21 +117,6 @@ class DeleteSectionDashboardError extends DashboardState {
 
 
 
-// //Todo:Species
-// class GetSpeciesDashboardLoading extends DashboardState {}
-// class GetSpeciesDashboardSuccess extends DashboardState {}
-// class GetSpeciesDashboardError extends DashboardState {
-//   final String errorMessage;
-//
-//   GetSpeciesDashboardError({required this.errorMessage});
-// }
-// class AddSpeciesDashboardSuccess extends DashboardState {}
-// class AddSpeciesDashboardError extends DashboardState {
-//   final String errorMessage;
-//
-//   AddSpeciesDashboardError({required this.errorMessage});
-//
-// }
-// class AddSpeciesDashboardLoading extends DashboardState {}
+
 
 class ChangeDrawerIndex extends DashboardState {}

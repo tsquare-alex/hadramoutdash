@@ -94,13 +94,11 @@ class _UpdateSectionDialogState extends State<UpdateSectionDialog> {
                         });
                         Navigator.of(context).pop();
                       } else {
-                        print("Error: sectionId is null");
                         setState(() {
                           isLoading = false;
                         });
                       }
                     } else {
-                      print("Validation failed");
                     }
                   },
                 ),

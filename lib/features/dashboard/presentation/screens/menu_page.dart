@@ -122,16 +122,18 @@ class _MenuPageState extends State<MenuPage> {
                                                         width: 320,
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: AppColors
-                                                              .whiteOp100,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(22),
-                                                                  border: Border.all(
-                                                                    color: AppColors.greyOp100,
-                                                                    width: 2,
-                                                                  )
-                                                        ),
+                                                                color: AppColors
+                                                                    .whiteOp100,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            22),
+                                                                border:
+                                                                    Border.all(
+                                                                  color: AppColors
+                                                                      .greyOp100,
+                                                                  width: 2,
+                                                                )),
                                                         child: Column(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -208,7 +210,7 @@ class _MenuPageState extends State<MenuPage> {
                                                             Image.asset(
                                                                 "assets/images/dashboard_logo.png"),
                                                         // errorBuilder: (context, error, stackTrace) {
-                                                        //   // print('Error loading image: $error');
+
                                                         //   return Image.asset("assets/images/dashboard_logo.png");
                                                         // },
                                                       ),
@@ -242,7 +244,6 @@ class _MenuPageState extends State<MenuPage> {
                     context.read<DashboardBloc>().getSpecies();
                     return const Center(child: CircularProgressIndicator());
                   } else {
-                    print("Unexpected State: $state");
                     return const Center(child: CircularProgressIndicator());
                   }
                 },

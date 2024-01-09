@@ -193,7 +193,6 @@ class _AddDishDialogState extends State<AddSpeciesDialog> {
                         widget.dashboardCubit.titleController.clear();
                         Navigator.of(context).pop();
                       } else {
-                        print("Validation failed");
                       }
                     },
                   ),

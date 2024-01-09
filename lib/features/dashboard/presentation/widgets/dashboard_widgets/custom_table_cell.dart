@@ -48,7 +48,6 @@ class CustomTableCell extends StatelessWidget {
                     height: 50,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
-                      print('Error loading image: $error');
                       return Image.asset("assets/images/dashboard_logo.png");
                     },
                   ),

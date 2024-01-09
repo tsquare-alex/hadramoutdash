@@ -12,7 +12,6 @@ class DashboardRepository {
 
   DashboardRepository(this._dashboardDataSource);
 
-
   Future<List<OrderModel>> getOrder() async {
     try {
       final data = await _dashboardDataSource.getOrders();
@@ -35,12 +34,10 @@ class DashboardRepository {
   Future<void> updateOrder(String orderId, OrderModel updatedOrder) async {
     try {
       await _dashboardDataSource.updateOrder(orderId, updatedOrder);
-    } on FirebaseException catch (e) {
-      print("FirebaseException: $e");
-      throw e; // Rethrow the exception
+    } on FirebaseException catch (_) {
+      rethrow; // Rethrow the exception
     }
   }
-
 
   Future<void> deleteOrder(String orderId) async {
     try {
@@ -51,14 +48,12 @@ class DashboardRepository {
       // if (imagePath != null) {
       //   await _dashboardDataSource.deleteImage(imagePath);
       // }
-    } on FirebaseException catch (e) {
-      print("Error deleting Species: $e");
-      // throw e;
+    } on FirebaseException catch (_) {
+      rethrow;
     }
   }
 
-
-  Future<void> addSpecies (SpeciesModel species) async {
+  Future<void> addSpecies(SpeciesModel species) async {
     try {
       await _dashboardDataSource.addSpecies(species);
     } on FirebaseException catch (_) {
@@ -66,22 +61,19 @@ class DashboardRepository {
     }
   }
 
-  Future<void> updateSpecies(String speciesId, SpeciesModel updatedSpecies) async {
+  Future<void> updateSpecies(
+      String speciesId, SpeciesModel updatedSpecies) async {
     try {
       await _dashboardDataSource.updateSpecies(speciesId, updatedSpecies);
-    } on FirebaseException catch (e) {
-      print("FirebaseException: $e");
-      throw e; // Rethrow the exception
+    } on FirebaseException catch (_) {
+      rethrow; // Rethrow the exception
     }
   }
 
-
-
-
   Future<String?> getSpeciesImagePath(String speciesId) async {
     return await _dashboardDataSource.getSpeciesImagePath(speciesId);
-
   }
+
   Future<List<SpeciesModel>> getSpecies() async {
     try {
       final data = await _dashboardDataSource.getSpecies();
@@ -104,32 +96,27 @@ class DashboardRepository {
       if (imagePath != null) {
         await _dashboardDataSource.deleteImage(imagePath);
       }
-    } on FirebaseException catch (e) {
-      print("Error deleting Species: $e");
-      // throw e;
+    } on FirebaseException catch (_) {
+      rethrow; // throw e;
     }
   }
 
   Future<void> deleteSection(String sectionId) async {
     try {
       await _dashboardDataSource.deleteSection(sectionId);
-
-    } on FirebaseException catch (e) {
-      print("Error deleting section: $e");
-      // throw e;
+    } on FirebaseException catch (_) {
+      rethrow; // throw e;
     }
   }
 
-  Future<void> updateSection(String sectionId, SectionModel updateSection) async {
+  Future<void> updateSection(
+      String sectionId, SectionModel updateSection) async {
     try {
       await _dashboardDataSource.updateSection(sectionId, updateSection);
-    } on FirebaseException catch (e) {
-      print("FirebaseException: $e");
-      throw e; // Rethrow the exception
+    } on FirebaseException catch (_) {
+      rethrow;
     }
   }
-
-
 
   Future<List<SectionModel>> getSections() async {
     try {
@@ -140,15 +127,11 @@ class DashboardRepository {
     }
   }
 
-  Future<void> addSection (SectionModel section) async {
+  Future<void> addSection(SectionModel section) async {
     try {
       await _dashboardDataSource.addSection(section);
     } on FirebaseException catch (_) {
       return;
     }
   }
-
-
-
-
 }

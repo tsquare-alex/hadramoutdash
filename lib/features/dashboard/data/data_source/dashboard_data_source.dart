@@ -23,7 +23,6 @@ class DashboardDataSource {
     final result = await _firebaseDatabase.collection('orders')
         // .orderBy('created_at', descending: true)
         .get();
-    print('Orders Query Result: ${result.docs}');
     return result;
   }
 
@@ -52,7 +51,6 @@ class DashboardDataSource {
     final result = await _firebaseDatabase.collection('species')
         .orderBy('created_at', descending: true)
         .get();
-    print('Species Query Result: ${result.docs}');
     return result;
   }
 
@@ -93,7 +91,6 @@ class DashboardDataSource {
     try {
       await _firebaseStorage.ref(imagePath).delete();
     } on FirebaseException catch (e) {
-      print("Error deleting image: $e");
       // throw e;
     }
   }

@@ -120,14 +120,14 @@ class DashboardScreen extends StatelessWidget {
                     ),
                   ),
                   actions: [
-                    AppBarButton(
-                      onTap: () {},
-                      icon: ImageConstants.searchIcon,
-                      toolTip: 'البحث',
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
+                    // AppBarButton(
+                    //   onTap: () {},
+                    //   icon: ImageConstants.searchIcon,
+                    //   toolTip: 'البحث',
+                    // ),
+                    // const SizedBox(
+                    //   width: 20,
+                    // ),
                     AppBarButton(
                       onTap: () {},
                       icon: ImageConstants.notificationsIcon,

@@ -55,8 +55,6 @@ class _UpdateDishDialogState extends State<UpdateDishDialog> {
           ? widget.dashboardBloc.sections.first
           : SectionModel(id: "", title: ""),
     );
-    print(
-        "Initial selectedSection: ${context.read<DashboardBloc>().selectedSection}");
   }
 
   @override
@@ -258,13 +256,11 @@ class _UpdateDishDialogState extends State<UpdateDishDialog> {
                           });
                           Navigator.of(context).pop();
                         } else {
-                          print("Error: speciesId is null");
                           setState(() {
                             context.read<DashboardBloc>().isLoading = false;
                           });
                         }
                       } else {
-                        print("Validation failed");
                       }
                     },
                   ),

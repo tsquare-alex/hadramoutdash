@@ -167,7 +167,6 @@ class _DishesPageState extends State<DishesPage> {
                                                 height: 100,
                                                 fit: BoxFit.cover,
                                                 errorBuilder: (context, error, stackTrace) {
-                                                  print('Error loading image: $error');
                                                   return Image.asset("assets/images/dashboard_logo.png");
                                                 },
                                               ),
@@ -205,7 +204,6 @@ class _DishesPageState extends State<DishesPage> {
                         context.read<DashboardBloc>().getSpecies();
                         return const Center(child: CircularProgressIndicator());
                       } else {
-                    print("Unexpected State: $state");
                     return const Center(child: CircularProgressIndicator());
                   }
                 },

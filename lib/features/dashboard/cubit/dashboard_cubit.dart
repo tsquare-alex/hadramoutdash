@@ -64,7 +64,6 @@ class DashboardBloc extends Cubit<DashboardState> {
             errorMessage: "Invalid or empty order data"));
       }
     } catch (error) {
-      print('Error in getOrder: $error');
       emit(GetOrderDashboardError(errorMessage: error.toString()));
     }
   }
@@ -83,7 +82,6 @@ class DashboardBloc extends Cubit<DashboardState> {
         }
       }
     } catch (error) {
-      print('Error in getOrderStream: $error');
       emit(GetOrderDashboardError(errorMessage: error.toString()));
     }
   }
@@ -93,7 +91,6 @@ class DashboardBloc extends Cubit<DashboardState> {
       await _dashboardRepository.updateOrder(orderId, updatedOrder);
       emit(UpdateOrderDashboardSuccess());
     } catch (error) {
-      print("Error updating dish: $error");
       emit(UpdateOrderDashboardError(errorMessage: error.toString()));
     }
   }
@@ -132,7 +129,6 @@ class DashboardBloc extends Cubit<DashboardState> {
       await _dashboardRepository.addSpecies(specices);
       emit(AddSpeciesDashboardSuccess());
     } catch (error) {
-      print("Error adding dish: $error");
       emit(AddSpeciesDashboardError(errorMessage: error.toString()));
     }
   }
@@ -174,15 +170,12 @@ class DashboardBloc extends Cubit<DashboardState> {
 
             // If no error occurred, the file exists, proceed with deletion
             await oldImageRef.delete();
-            print("Old Species image deleted successfully");
           } catch (error) {
             if (error is FirebaseException &&
                 error.code == 'storage/object-not-found') {
               // Handle the case where the file doesn't exist
-              print("Old Species image does not exist");
             } else {
               // Handle other errors
-              print("Error deleting old Species image: $error");
             }
           }
         }
@@ -192,7 +185,6 @@ class DashboardBloc extends Cubit<DashboardState> {
       await _dashboardRepository.updateSpecies(speciesId, updatedSpecies);
       emit(UpdateSpeciesDashboardSuccess());
     } catch (error) {
-      print("Error updating dish: $error");
       emit(UpdateSpeciesDashboardError(errorMessage: error.toString()));
     }
   }
@@ -237,7 +229,6 @@ class DashboardBloc extends Cubit<DashboardState> {
       String downloadUrl = await ref.getDownloadURL();
       return downloadUrl;
     } catch (error) {
-      print("Error uploading Species image: $error");
       emit(AddSpeciesImageDashboardError(errorMessage: error.toString()));
       return null;
     }
@@ -270,7 +261,6 @@ class DashboardBloc extends Cubit<DashboardState> {
       await _dashboardRepository.updateSection(sectionId, updatedSection);
       emit(UpdateSectionDashboardSuccess());
     } catch (error) {
-      print("Error updating dish: $error");
       emit(UpdateSectionDashboardError(errorMessage: error.toString()));
     }
   }
@@ -280,9 +270,6 @@ class DashboardBloc extends Cubit<DashboardState> {
       emit(GetSectionDashboardLoading());
 
       final sections = await _dashboardRepository.getSections();
-      print(
-          "${sections} =========================================================");
-
       _sections = sections;
       emit(GetSectionDashboardSuccess());
     } catch (error) {

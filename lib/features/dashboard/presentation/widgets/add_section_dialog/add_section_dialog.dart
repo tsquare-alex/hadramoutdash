@@ -70,7 +70,6 @@ class _AddDishDialogState extends State<AddSectionDialog> {
                         widget.dashboardBloc.sectionTitleController.clear();
                         Navigator.of(context).pop();
                       } else {
-                        print("Validation failed");
                       }
                     },
                   ),

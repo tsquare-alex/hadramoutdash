@@ -184,6 +184,7 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
                 SliverFillRemaining(
+                  hasScrollBody: false,
                   child: DashboardBloc.get(context)
                       .screens[context.watch<DashboardBloc>().selectedIndex],
                 ),

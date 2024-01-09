@@ -17,29 +17,27 @@ class LoginBloc extends Cubit<LoginState> {
   final TextEditingController passwordTextController = TextEditingController();
 
   Future<void> signIn() async {
-    // if (formKey.currentState!.validate()) {
-    emit(LoginLoading());
-    try {
-      await _loginRepository.signIn(
-        // email: emailTextController.text,
-        // password: passwordTextController.text,
-        email: 'admin@hadramout-hamza.com',
-        password: '123456',
-      );
-      emit(LoginCompleted());
-    } catch (error) {
-      String errorMessage;
-      switch ((error as FirebaseAuthException).code) {
-        case 'invalid-credential':
-          errorMessage = 'معلومات غير صحيحة';
-        default:
-          errorMessage = 'حدث خطأ ما: يرجى التأكد من صحة المعلومات المدخلة';
+    if (formKey.currentState!.validate()) {
+      emit(LoginLoading());
+      try {
+        await _loginRepository.signIn(
+          email: emailTextController.text.trim(),
+          password: passwordTextController.text.trim(),
+        );
+        emit(LoginCompleted());
+      } catch (error) {
+        String errorMessage;
+        switch ((error as FirebaseAuthException).code) {
+          case 'invalid-credential':
+            errorMessage = 'معلومات غير صحيحة';
+          default:
+            errorMessage = 'حدث خطأ ما: يرجى التأكد من صحة المعلومات المدخلة';
+        }
+        emit(
+          LoginError(errorMessage: errorMessage),
+        );
       }
-      emit(
-        LoginError(errorMessage: errorMessage),
-      );
     }
-    // }
   }
 
   void clearControllers() {

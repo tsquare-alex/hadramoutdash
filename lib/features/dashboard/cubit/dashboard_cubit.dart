@@ -307,7 +307,8 @@ class DashboardBloc extends Cubit<DashboardState> {
     'التصنيفات',
     'المنيو',
     // 'الاطباق',
-    'الاوردرات',
+    // 'الاوردرات',
+    'الطلبات',
   ];
 
   List<String> get drawerSelectedIcons => _drawerSelectedIcons;
@@ -316,7 +317,8 @@ class DashboardBloc extends Cubit<DashboardState> {
     ImageConstants.sectionsIconFill,
     ImageConstants.menuIconFill,
     // ImageConstants.dishesIconFill,
-    ImageConstants.offersIconFill,
+    // ImageConstants.offersIconFill,
+    ImageConstants.ordersIconFill,
   ];
   List<String> get drawerUnselectedIcons => _drawerUnselectedIcons;
   static const List<String> _drawerUnselectedIcons = [
@@ -324,7 +326,8 @@ class DashboardBloc extends Cubit<DashboardState> {
     ImageConstants.sectionsIcon,
     ImageConstants.menuIcon,
     // ImageConstants.dishesIcon,
-    ImageConstants.offersIcon,
+    // ImageConstants.offersIcon,
+    ImageConstants.ordersIcon,
   ];
 
   int selectedIndex = 0;

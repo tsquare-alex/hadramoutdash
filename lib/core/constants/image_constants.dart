@@ -16,6 +16,8 @@ class ImageConstants {
   static const String offersIconFill = '$imagePath/offers_icon_fill.png';
   static const String sectionsIcon = '$imagePath/sections_icon.png';
   static const String sectionsIconFill = '$imagePath/sections_icon_fill.png';
+  static const String ordersIcon = '$imagePath/orders_icon.png';
+  static const String ordersIconFill = '$imagePath/orders_icon_fill.png';
   static const String teamIcon = '$imagePath/team_icon.png';
   static const String teamIconFill = '$imagePath/team_icon_fill.png';
   static const String logoutIcon = '$imagePath/logout_icon.png';

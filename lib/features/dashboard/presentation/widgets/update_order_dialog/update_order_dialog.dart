@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -7,23 +6,18 @@ import 'package:hadramoutdash/features/dashboard/presentation/widgets/custom_dia
 import 'package:hadramoutdash/features/dashboard/presentation/widgets/custom_text.dart';
 import 'package:intl/intl.dart';
 
-
 import '../../../../../core/themes/colors.dart';
 import '../../../../../core/themes/styles.dart';
 import '../../../cubit/dashboard_cubit.dart';
 import '../order_custom_row.dart';
 import '../order_custom_text.dart';
 
-
-
-
-
 class UpdateOrderDialog extends StatefulWidget {
   final String orderId;
   final OrderModel currentOrder;
   final DashboardBloc dashboardBloc;
 
-  UpdateOrderDialog({
+  const UpdateOrderDialog({
     Key? key,
     required this.orderId,
     required this.currentOrder,
@@ -51,6 +45,7 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       surfaceTintColor: AppColors.whiteOp100,
+      contentPadding: const EdgeInsets.all(24),
       content: ScrollConfiguration(
         behavior: ScrollConfiguration.of(context).copyWith(
           scrollbars: false,
@@ -67,22 +62,34 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
                     title: "تعديل الاوردر",
                     isTitle: true,
                   ),
-                  OrderCustomRow(title: "اسم العميل", info: "${widget.currentOrder.client.name}"),
-                  OrderCustomRow(title: "رقم العميل", info: "${widget.currentOrder.client.number}"),
+                  Gap(18),
+                  OrderCustomRow(
+                      title: "اسم العميل",
+                      info: widget.currentOrder.client.name),
+                  OrderCustomRow(
+                      title: "رقم تليفون العميل",
+                      info: "${widget.currentOrder.client.number}"),
                   if (widget.currentOrder.client.address.isNotEmpty)
-                    OrderCustomRow(title: "عنوان الاوردر", info: "${widget.currentOrder.client.address}"),
+                    OrderCustomRow(
+                        title: "عنوان العميل",
+                        info: widget.currentOrder.client.address),
                   if (widget.currentOrder.client.building.isNotEmpty)
-                    OrderCustomRow(title: "رقم البناية", info: "${widget.currentOrder.client.building}"),
+                    OrderCustomRow(
+                        title: "رقم المبنى",
+                        info: widget.currentOrder.client.building),
                   if (widget.currentOrder.client.floor!.isNotEmpty)
-                    OrderCustomRow(title: "رقم الدور", info: "${widget.currentOrder.client.floor}"),
+                    OrderCustomRow(
+                        title: "رقم الدور",
+                        info: "${widget.currentOrder.client.floor}"),
                   if (widget.currentOrder.client.apartment!.isNotEmpty)
-                    OrderCustomRow(title: "رقم الشقة", info: "${widget.currentOrder.client.apartment}"),
+                    OrderCustomRow(
+                        title: "رقم الشقة",
+                        info: "${widget.currentOrder.client.apartment}"),
 
-
-                  Gap(10),
+                  const Gap(10),
 
                   DataTable(
-                    columns: [
+                    columns: const [
                       DataColumn(label: OrderCustomText(title: "الاسم")),
                       DataColumn(label: OrderCustomText(title: "الكمية")),
                       DataColumn(label: OrderCustomText(title: "السعر")),
@@ -107,10 +114,15 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text("الأجمالى:",style: AppTextStyles.font20YellowBold,textAlign: TextAlign.end),
-                        const SizedBox(width: 5,),
-
-                        Text("${widget.currentOrder.subTotal}",style: AppTextStyles.font20BlackSemiBold,textAlign: TextAlign.end),
+                        const Text("الأجمالى:",
+                            style: AppTextStyles.font20YellowBold,
+                            textAlign: TextAlign.end),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Text("${widget.currentOrder.subTotal}",
+                            style: AppTextStyles.font20BlackSemiBold,
+                            textAlign: TextAlign.end),
                       ],
                     ),
                   ),
@@ -121,28 +133,41 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Text("طريقة الاوردر: ${widget.currentOrder.orderMethod}"),
-                        OrderCustomRow(title: "طريقة الاستلام", info: "${widget.currentOrder.orderMethod}"),
-                        OrderCustomRow(title: "مكان الاستلام", info: "${widget.currentOrder.deliveryModel?.title}"),
                         OrderCustomRow(
-                          title: "تاريخ الحجز",
-                          info: DateFormat("dd MMMM yyyy", "ar").format(widget.currentOrder.orderDate),
+                            title: "طريقة الاستلام",
+                            info: widget.currentOrder.orderMethod),
+                        OrderCustomRow(
+                            title: "منطقة التوصيل",
+                            info:
+                                "${widget.currentOrder.deliveryModel?.title}"),
+                        OrderCustomRow(
+                          title: "تاريخ التسليم",
+                          info: DateFormat("dd MMMM yyyy", "ar")
+                              .format(widget.currentOrder.orderDate),
                         ),
-                        OrderCustomRow(title: "وقت الحجز", info: "${widget.currentOrder.orderTime}"),
-                        OrderCustomRow(title: "تكلفة التوصيل", info: "${widget.currentOrder.deliveryModel?.fees}"),
-
+                        OrderCustomRow(
+                            title: "وقت التسليم",
+                            info: widget.currentOrder.orderTime),
+                        OrderCustomRow(
+                            title: "تكلفة التوصيل",
+                            info: "${widget.currentOrder.deliveryModel?.fees}"),
                       ],
                     ),
                   if (widget.currentOrder.orderMethod == "حجز بالمطعم")
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        OrderCustomRow(title: "طريقة الاستلام", info: "${widget.currentOrder.orderMethod}"),
+                        OrderCustomRow(
+                            title: "طريقة الاستلام",
+                            info: widget.currentOrder.orderMethod),
                         OrderCustomRow(
                           title: "تاريخ الحجز",
-                          info: DateFormat("dd MMMM yyyy", "ar").format(widget.currentOrder.orderDate),
+                          info: DateFormat("dd MMMM yyyy", "ar")
+                              .format(widget.currentOrder.orderDate),
                         ),
-                        OrderCustomRow(title: "وقت الحجز", info: "${widget.currentOrder.orderTime}"),
-
+                        OrderCustomRow(
+                            title: "وقت الحجز",
+                            info: widget.currentOrder.orderTime),
                       ],
                     ),
 
@@ -157,12 +182,13 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("اجمالى السعر: ",style: AppTextStyles.font20YellowBold),
-                        Text("${widget.currentOrder.total}",style: AppTextStyles.font20BlackSemiBold),
+                        const Text("اجمالى السعر: ",
+                            style: AppTextStyles.font20YellowBold),
+                        Text("${widget.currentOrder.total} جنيه",
+                            style: AppTextStyles.font20BlackSemiBold),
                       ],
                     ),
                   ),
-
 
                   const Gap(20),
                   Row(
@@ -242,7 +268,6 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
                       Navigator.pop(context);
                     },
                   ),
-
                 ],
               ),
             ),
@@ -253,13 +278,11 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
   }
 }
 
-
-
 void showUpdateOrderDialog(
-    BuildContext context,
-    String orderId,
-    OrderModel currentOrder,
-    ) async {
+  BuildContext context,
+  String orderId,
+  OrderModel currentOrder,
+) async {
   final dashboardBloc = context.read<DashboardBloc>();
 
   await showDialog(
@@ -277,9 +300,3 @@ void showUpdateOrderDialog(
     },
   );
 }
-
-
-
-
-
-

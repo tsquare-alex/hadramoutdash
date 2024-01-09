@@ -18,14 +18,14 @@ class CustomElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.yellowOp100,
-        minimumSize: Size(155, 58),
-        maximumSize: Size(155, 58),
-      ),
+      style: AppButtonStyles.buttonYellowSize167x58Rounded10,
       onPressed: onPressed,
       child: Row(
         children: [
+          Flexible(
+            fit: FlexFit.tight,
+            child: Icon(icon, color: AppColors.whiteOp100),
+          ),
           ResponsiveVisibility(
             hiddenConditions: [
               Condition.smallerThan(value: false, name: DESKTOP),
@@ -35,16 +35,11 @@ class CustomElevatedButton extends StatelessWidget {
             fit: FlexFit.tight,
             child: Text(
               label,
-              style: TextStyle(color: AppColors.whiteOp100),
+              style: AppTextStyles.font14WhiteBold,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),),
-          Flexible(
-            fit: FlexFit.tight,
-            child: Icon(icon, color: AppColors.whiteOp100),
-          ),
-
         ],
       ),
     );

@@ -31,7 +31,7 @@ class _OrderPageState extends State<OrderPage> {
           child:    BlocBuilder<DashboardBloc, DashboardState>(
             builder: (context, state) {
               if (state is GetOrderDashboardLoading) {
-                return const Center(child: CircularProgressIndicator());
+                return   const Center(child: CircularProgressIndicator());
               } else if (state is GetOrderDashboardError) {
                 // return Text('Error: ${state.errorMessage}');
                 return const Center(child: CustomText(title: "لا توجد اوردرات",isTitle: true,));
@@ -48,8 +48,11 @@ class _OrderPageState extends State<OrderPage> {
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("اسم العميل", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                          Text("تعديل", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          Expanded(child: Text("اسم العميل", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+                          Expanded(child: Text("السعر", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+                          Text("التعديل", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          // Text("السعر", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          // Text("تعديل", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                         ],
                       ),
                       const SizedBox(height: 8), // Add spacing between title and items
@@ -65,7 +68,9 @@ class _OrderPageState extends State<OrderPage> {
                                 Expanded(
                                   child: Text( item.client.name, style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500)),
                                 ),
-
+                                Expanded(
+                                  child: Text( item.total.toString(), style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500)),
+                                ),
                             SectionCustomActionButton(
                               onElevatedButtonPressed: () {
                                 showUpdateOrderDialog(context, item.id, item);

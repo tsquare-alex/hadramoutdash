@@ -13,13 +13,15 @@ class OrderModel extends Equatable {
   final ClientModel client;
   final bool confirmed;
   final bool delivered;
-  final double price;
+  final double total;
+  final double subTotal;
   final String createdAt;
   final DateTime orderDate;
   final String orderTime;
   final String orderMethod;
   final List<CartModel> cartModel;
   final DeliveryModel? deliveryModel;
+
 
   const OrderModel({
     required this.id,
@@ -31,9 +33,11 @@ class OrderModel extends Equatable {
     required this.orderMethod,
     this.deliveryModel,
     required this.delivered,
-    required this.price,
+    required this.total,
+    required this.subTotal,
     required this.createdAt,
     required this.cartModel,
+
   });
 
   @override
@@ -45,7 +49,7 @@ class OrderModel extends Equatable {
     orderDate,
     delivered,
     deliveryModel,
-    price,
+    total,
     cartModel,
     orderTime,
     orderDate,
@@ -63,7 +67,8 @@ class OrderModel extends Equatable {
       'order_method': orderMethod,
       'delivery_details': deliveryModel?.toJson(),
       'delivered': delivered,
-      'price': price,
+      'total': total,
+      'sub_total': subTotal,
       'created_at': createdAt,
       'items': cartModel.map((x) => x.toJson()).toList(),
     };
@@ -75,7 +80,8 @@ class OrderModel extends Equatable {
       client: ClientModel.fromJson(json['client']),
       confirmed: json['confirmed'] ?? false,
       delivered: json['delivered'] ?? false,
-      price: json['price']?.toDouble() ?? 0.0,
+      total: json['total']?.toDouble() ?? 0.0,
+      subTotal: json['sub_total']?.toDouble() ?? 0.0,
       createdAt: json['created_at'] ?? '',
       orderDate: json['order_date'] is String
           ? DateFormat('yyyy-MM-dd').parse(json['order_date'])

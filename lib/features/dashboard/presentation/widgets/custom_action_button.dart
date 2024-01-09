@@ -19,7 +19,7 @@ class CustomActionButton extends StatelessWidget {
       width: 315,
       padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
       child: Row(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InkWell(
             onTap: _onElevatedButtonPressed,

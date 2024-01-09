@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../../../../../core/themes/colors.dart';
 import '../../../../../core/themes/styles.dart';
 import '../../../cubit/dashboard_cubit.dart';
+import '../order_custom_row.dart';
 import '../order_custom_text.dart';
 
 
@@ -56,10 +57,11 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
         ),
         child: SingleChildScrollView(
           child: Container(
-            width: 600.0,
+            // width: 600.0,
             child: Form(
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                // mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const CustomText(
                     title: "تعديل الاوردر",
@@ -67,24 +69,6 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
                   ),
                   OrderCustomRow(title: "اسم العميل", info: "${widget.currentOrder.client.name}"),
                   OrderCustomRow(title: "رقم العميل", info: "${widget.currentOrder.client.number}"),
-                  // Row(
-                  //   children: [
-                  //     if (widget.currentOrder.client.address.isNotEmpty)
-                  //       Expanded(
-                  //         child: OrderCustomRow(title: "عنوان الاوردر", info: "${widget.currentOrder.client.address}"),
-                  //       ),
-                  //
-                  //     if (widget.currentOrder.client.building.isNotEmpty)
-                  //       OrderCustomRow(title: "رقم البناية", info: "${widget.currentOrder.client.building}"),
-                  //
-                  //
-                  //     if (widget.currentOrder.client.floor!.isNotEmpty)
-                  //       OrderCustomRow(title: "رقم الدور", info: "${widget.currentOrder.client.floor}"),
-                  //
-                  //     if (widget.currentOrder.client.apartment!.isNotEmpty)
-                  //       OrderCustomRow(title: "رقم الشقة", info: "${widget.currentOrder.client.floor}"),
-                  //   ],
-                  // ),
                   if (widget.currentOrder.client.address.isNotEmpty)
                     OrderCustomRow(title: "عنوان الاوردر", info: "${widget.currentOrder.client.address}"),
                   if (widget.currentOrder.client.building.isNotEmpty)
@@ -108,61 +92,30 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
                       return DataRow(
                         cells: [
                           DataCell(Text(item.title)),
-                          DataCell(Text("${item.quantity}")),
-                          DataCell(Text("${item.price}")),
-                          DataCell(Text("${item.totalPrice}")),
+                          DataCell(Center(child: Text("${item.quantity}"))),
+                          DataCell(Center(child: Text("${item.price}"))),
+                          DataCell(Center(child: Text("${item.totalPrice}"))),
                         ],
                       );
                     }).toList(),
                   ),
+                  const Divider(color: AppColors.blackOp100),
 
+                  Padding(
+                    padding: const EdgeInsets.only(left: 50.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text("الأجمالى:",style: AppTextStyles.font20YellowBold,textAlign: TextAlign.end),
+                        const SizedBox(width: 5,),
 
+                        Text("${widget.currentOrder.subTotal}",style: AppTextStyles.font20BlackSemiBold,textAlign: TextAlign.end),
+                      ],
+                    ),
+                  ),
 
-
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   itemCount: widget.currentOrder.cartModel.length,
-                  //   itemBuilder: (context, index) {
-                  //     var item = widget.currentOrder.cartModel[index];
-                  //     return Row(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         Expanded(
-                  //           child: Text("اسم الاوردر: ${item.title}"),
-                  //         ),
-                  //         SizedBox(width: 16),
-                  //         Expanded(
-                  //           child: Text("الكمية: ${item.quantity}"),
-                  //         ),
-                  //         SizedBox(width: 16),
-                  //         Expanded(
-                  //           child: Text("السعر: ${item.price}"),
-                  //         ),
-                  //       ],
-                  //     );
-                  //   },
-                  // ),
-
-
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  //   // mainAxisAlignment: MainAxisAlignment.start,
-                  //   children: widget.currentOrder.cartModel.map((item) {
-                  //     return Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       // mainAxisAlignment: MainAxisAlignment.start,
-                  //       children: [
-                  //         OrderCustomRow(title: "اسم الاوردر", info: "${item.title}"),
-                  //
-                  //         OrderCustomRow(title: "الكمية", info: "${item.quantity}"),
-                  //         OrderCustomRow(title: "السعر", info: "${item.price}"),
-                  //
-                  //         // You can add additional information here, like total price, description, etc.
-                  //         const SizedBox(height: 16), // Add some spacing between items
-                  //       ],
-                  //     );
-                  //   }).toList(),
-                  // ),
+                  const Divider(color: AppColors.blackOp100),
                   if (widget.currentOrder.orderMethod == "التوصيل الي البيت")
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,11 +123,11 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
                         // Text("طريقة الاوردر: ${widget.currentOrder.orderMethod}"),
                         OrderCustomRow(title: "طريقة الاستلام", info: "${widget.currentOrder.orderMethod}"),
                         OrderCustomRow(title: "مكان الاستلام", info: "${widget.currentOrder.deliveryModel?.title}"),
-                        OrderCustomRow(title: "وقت الحجز", info: "${widget.currentOrder.orderTime}"),
                         OrderCustomRow(
                           title: "تاريخ الحجز",
                           info: DateFormat("dd MMMM yyyy", "ar").format(widget.currentOrder.orderDate),
                         ),
+                        OrderCustomRow(title: "وقت الحجز", info: "${widget.currentOrder.orderTime}"),
                         OrderCustomRow(title: "تكلفة التوصيل", info: "${widget.currentOrder.deliveryModel?.fees}"),
 
                       ],
@@ -184,11 +137,12 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         OrderCustomRow(title: "طريقة الاستلام", info: "${widget.currentOrder.orderMethod}"),
-                        OrderCustomRow(title: "وقت الحجز", info: "${widget.currentOrder.orderTime}"),
                         OrderCustomRow(
                           title: "تاريخ الحجز",
                           info: DateFormat("dd MMMM yyyy", "ar").format(widget.currentOrder.orderDate),
                         ),
+                        OrderCustomRow(title: "وقت الحجز", info: "${widget.currentOrder.orderTime}"),
+
                       ],
                     ),
 
@@ -196,7 +150,19 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
                   // OrderCustomRow(title: "مكان التوصيل", info: "${widget.currentOrder.deliveryModel?.title}"),
                   // OrderCustomRow(title: "تكلفة التوصيل", info: "${widget.currentOrder.deliveryModel?.fees}"),
 
-                  OrderCustomRow(title: "اجمالى السعر", info: "${widget.currentOrder.price}"),
+                  // OrderCustomRow(title: "اجمالى السعر", info: "${widget.currentOrder.price}"),
+
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("اجمالى السعر: ",style: AppTextStyles.font20YellowBold),
+                        Text("${widget.currentOrder.total}",style: AppTextStyles.font20BlackSemiBold),
+                      ],
+                    ),
+                  ),
+
 
                   const Gap(20),
                   Row(
@@ -258,13 +224,14 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
                         client: widget.currentOrder.client,
                         confirmed: _confirmed,
                         delivered: _delivered,
-                        price: widget.currentOrder.price,
+                        total: widget.currentOrder.total,
                         createdAt: widget.currentOrder.createdAt,
                         orderDate: widget.currentOrder.orderDate,
                         orderTime: widget.currentOrder.orderTime,
                         orderMethod: widget.currentOrder.orderMethod,
                         cartModel: widget.currentOrder.cartModel,
                         deliveryModel: widget.currentOrder.deliveryModel,
+                        subTotal: widget.currentOrder.subTotal,
                       );
 
                       widget.dashboardBloc.updateOrder(
@@ -286,34 +253,7 @@ class _UpdateOrderDialogState extends State<UpdateOrderDialog> {
   }
 }
 
-class OrderCustomRow extends StatelessWidget {
-  const OrderCustomRow({
-    super.key,
-     required this.title, required this.info,
-  });
 
-  final String  title;
-  final String  info;
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-         OrderCustomText(
-          title:"$title:   ",
-
-        ),
-        Flexible(
-          child: CustomText(
-            title: info,
-            isTitle: false,
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 void showUpdateOrderDialog(
     BuildContext context,

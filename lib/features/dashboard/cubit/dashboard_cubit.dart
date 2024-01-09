@@ -1,4 +1,3 @@
-
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hadramoutdash/core/common/models/client.dart';
@@ -18,29 +17,25 @@ import '../../../core/common/models/dishes.dart';
 import '../data/repository/dashboard_repository.dart';
 part 'dashboard_state.dart';
 
-
 class DashboardBloc extends Cubit<DashboardState> {
   final DashboardRepository _dashboardRepository;
 
   DashboardBloc(
-      this._dashboardRepository,
-      ) : super(DashboardInitial());
+    this._dashboardRepository,
+  ) : super(DashboardInitial());
 
   static DashboardBloc get(context) => BlocProvider.of<DashboardBloc>(context);
   AutovalidateMode autovalidateMode = AutovalidateMode.onUserInteraction;
 
-
   late List<SectionModel> _sections = [];
 
   List<SectionModel> get sections => _sections;
-
 
   late String errorMessage;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   String? fileName;
   String? downloadUrl;
   PlatformFile? pickedImage;
-
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<FormState> updateFormKey = GlobalKey<FormState>();
@@ -50,7 +45,6 @@ class DashboardBloc extends Cubit<DashboardState> {
   TextEditingController createdAtController = TextEditingController();
   TextEditingController offerController = TextEditingController();
   TextEditingController offerValueController = TextEditingController();
-
 
   late List<OrderModel> _order = [];
 
@@ -66,7 +60,8 @@ class DashboardBloc extends Cubit<DashboardState> {
         _order = orderList;
         emit(GetOrderDashboardSuccess());
       } else {
-        emit(GetOrderDashboardError(errorMessage: "Invalid or empty order data"));
+        emit(GetOrderDashboardError(
+            errorMessage: "Invalid or empty order data"));
       }
     } catch (error) {
       print('Error in getOrder: $error');
@@ -74,13 +69,27 @@ class DashboardBloc extends Cubit<DashboardState> {
     }
   }
 
+  Stream<List<OrderModel>> getOrderStream() async* {
+    try {
+      emit(GetOrderDashboardLoading());
 
-
+      await for (var data in _dashboardRepository.getOrderStream()) {
+        if (data.isNotEmpty) {
+          _order = data;
+          emit(GetOrderDashboardSuccess());
+        } else {
+          emit(GetOrderDashboardError(
+              errorMessage: "Invalid or empty order data"));
+        }
+      }
+    } catch (error) {
+      print('Error in getOrderStream: $error');
+      emit(GetOrderDashboardError(errorMessage: error.toString()));
+    }
+  }
 
   Future<void> updateOrder(String orderId, OrderModel updatedOrder) async {
     try {
-
-
       await _dashboardRepository.updateOrder(orderId, updatedOrder);
       emit(UpdateOrderDashboardSuccess());
     } catch (error) {
@@ -104,7 +113,6 @@ class DashboardBloc extends Cubit<DashboardState> {
     try {
       double price = double.parse(priceController.text);
 
-
       String? imageUrl;
       if (pickedImage != null) imageUrl = await uploadSpeciesImage();
       imageUrl ??= "";
@@ -117,8 +125,8 @@ class DashboardBloc extends Cubit<DashboardState> {
         price: price,
         createdAt: DateTime.now().toString(),
         section: SectionModel(id: "id", title: selectedSection),
-        offer: false,
-        offerValue: 20,
+        // offer: false,
+        // offerValue: 0,
       );
 
       await _dashboardRepository.addSpecies(specices);
@@ -128,6 +136,7 @@ class DashboardBloc extends Cubit<DashboardState> {
       emit(AddSpeciesDashboardError(errorMessage: error.toString()));
     }
   }
+
   late List<SpeciesModel> _species = [];
 
   List<SpeciesModel> get species => _species;
@@ -137,18 +146,19 @@ class DashboardBloc extends Cubit<DashboardState> {
 
       final species = await _dashboardRepository.getSpecies();
 
-
       _species = species;
       emit(GetSpeciesDashboardSuccess());
-
     } catch (error) {
       emit(GetSpeciesDashboardError(errorMessage: error.toString()));
     }
   }
-  Future<void> updateSpecies(String speciesId, SpeciesModel updatedSpecies) async {
+
+  Future<void> updateSpecies(
+      String speciesId, SpeciesModel updatedSpecies) async {
     try {
       // Get the old dish data
-      SpeciesModel oldSpecies = _species.firstWhere((dish) => dish.id == speciesId);
+      SpeciesModel oldSpecies =
+          _species.firstWhere((dish) => dish.id == speciesId);
 
       // Check if the image has been changed
       if (oldSpecies.image != updatedSpecies.image) {
@@ -166,7 +176,8 @@ class DashboardBloc extends Cubit<DashboardState> {
             await oldImageRef.delete();
             print("Old Species image deleted successfully");
           } catch (error) {
-            if (error is FirebaseException && error.code == 'storage/object-not-found') {
+            if (error is FirebaseException &&
+                error.code == 'storage/object-not-found') {
               // Handle the case where the file doesn't exist
               print("Old Species image does not exist");
             } else {
@@ -185,6 +196,7 @@ class DashboardBloc extends Cubit<DashboardState> {
       emit(UpdateSpeciesDashboardError(errorMessage: error.toString()));
     }
   }
+
   Future<void> deleteSpecies(String speciesId) async {
     try {
       await _dashboardRepository.deleteSpecies(speciesId);
@@ -213,7 +225,6 @@ class DashboardBloc extends Cubit<DashboardState> {
     }
   }
 
-
   Future<String?> uploadSpeciesImage() async {
     try {
       String imageName = Uuid().v4(); // This will generate a unique UUID
@@ -240,7 +251,6 @@ class DashboardBloc extends Cubit<DashboardState> {
   late TextEditingController updateDishSectionController;
   late TextEditingController updateDishOfferValueController;
 
-
   bool isLoading = false;
 
   Future<void> deleteSection(String sectionId) async {
@@ -254,8 +264,8 @@ class DashboardBloc extends Cubit<DashboardState> {
     }
   }
 
-
-  Future<void> updateSection(String sectionId, SectionModel updatedSection) async {
+  Future<void> updateSection(
+      String sectionId, SectionModel updatedSection) async {
     try {
       await _dashboardRepository.updateSection(sectionId, updatedSection);
       emit(UpdateSectionDashboardSuccess());
@@ -265,41 +275,29 @@ class DashboardBloc extends Cubit<DashboardState> {
     }
   }
 
-
   Future<void> getSections() async {
-    try{
-    emit(GetSectionDashboardLoading());
+    try {
+      emit(GetSectionDashboardLoading());
 
-    final sections = await _dashboardRepository.getSections();
-    print("${sections} =========================================================");
+      final sections = await _dashboardRepository.getSections();
+      print(
+          "${sections} =========================================================");
 
       _sections = sections;
       emit(GetSectionDashboardSuccess());
-    }catch (error){
+    } catch (error) {
       emit(GetSectionDashboardError(errorMessage: error.toString()));
-
     }
   }
-
-
-
 
   TextEditingController sectionTitleController = TextEditingController();
 
   Future<void> addSection() async {
     emit(AddSectionDashboardLoading());
-    var section =  SectionModel(id: "id", title: sectionTitleController.text);
+    var section = SectionModel(id: "id", title: sectionTitleController.text);
     await _dashboardRepository.addSection(section);
     emit(AddSectionDashboardSuccess());
   }
-
-
-
-
-
-
-
-
 
   List<String> get drawerLabels => _drawerLabels;
   static const List<String> _drawerLabels = [

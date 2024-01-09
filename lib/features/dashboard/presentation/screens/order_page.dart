@@ -75,7 +75,7 @@ class _OrderPageState extends State<OrderPage> {
                                       child: Text("اسم العميل",
                                           style: AppTextStyles.font20BlackSemiBold.copyWith(fontWeight: FontWeight.bold))),
                                   Expanded(
-                                      child: Text("السعر",
+                                      child: Text("اجمالي الطلب",
                                           style: AppTextStyles.font20BlackSemiBold.copyWith(fontWeight: FontWeight.bold))),
                                   Expanded(
                                       child: Text("تاريخ الطلب",

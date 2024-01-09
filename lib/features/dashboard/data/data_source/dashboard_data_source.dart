@@ -27,6 +27,13 @@ class DashboardDataSource {
     return result;
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getOrdersStream() {
+    return _firebaseDatabase
+        .collection('orders')
+        .orderBy('created_at', descending: true)
+        .snapshots();
+  }
+
   Future<void> deleteOrder(String orderId) async {
     await _firebaseDatabase.collection('orders').doc(orderId).delete();
   }

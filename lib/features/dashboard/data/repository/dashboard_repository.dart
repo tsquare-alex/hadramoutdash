@@ -22,6 +22,16 @@ class DashboardRepository {
     }
   }
 
+  Stream<List<OrderModel>> getOrderStream() async* {
+    try {
+      await for (var data in _dashboardDataSource.getOrdersStream()) {
+        yield data.docs.map((doc) => OrderModel.fromJson(doc.data())).toList();
+      }
+    } catch (_) {
+      yield List.empty();
+    }
+  }
+
   Future<void> updateOrder(String orderId, OrderModel updatedOrder) async {
     try {
       await _dashboardDataSource.updateOrder(orderId, updatedOrder);
